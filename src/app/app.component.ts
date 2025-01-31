@@ -9,5 +9,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'jardin-mi-rayito-de-luna';
+  title = 'Jardín de infantes Mi rayito de Luna - José C. Paz';
 }
