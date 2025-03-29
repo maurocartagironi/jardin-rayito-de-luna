@@ -1,44 +1,42 @@
 {
-  "name": "jardin-mi-rayito-de-luna",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:jardin-mi-rayito-de-luna": "node dist/jardin-mi-rayito-de-luna/server/server.mjs"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "^18.2.0",
-    "@angular/common": "^18.2.0",
-    "@angular/compiler": "^18.2.0",
-    "@angular/core": "^18.2.0",
-    "@angular/forms": "^18.2.0",
-    "@angular/platform-browser": "^18.2.0",
-    "@angular/platform-browser-dynamic": "^18.2.0",
-    "@angular/platform-server": "^18.2.0",
-    "@angular/router": "^18.2.0",
-    "@angular/ssr": "^18.2.1",
-    "express": "^4.18.2",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.14.10"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.1",
-    "@angular/cli": "^18.2.1",
-    "@angular/compiler-cli": "^18.2.0",
-    "@types/express": "^4.17.17",
-    "@types/jasmine": "~5.1.0",
-    "@types/node": "^18.18.0",
-    "jasmine-core": "~5.2.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.5.2"
-  }
+	"name": "web-app",
+	"type": "module",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@radix-ui/react-alert-dialog": "^1.0.5",
+		"@radix-ui/react-avatar": "^1.0.3",
+		"@radix-ui/react-checkbox": "^1.0.4",
+		"@radix-ui/react-dialog": "^1.0.5",
+		"@radix-ui/react-dropdown-menu": "^2.0.5",
+		"@radix-ui/react-label": "^2.0.2",
+		"@radix-ui/react-slider": "^1.1.2",
+		"@radix-ui/react-slot": "^1.0.2",
+		"@radix-ui/react-tabs": "^1.0.4",
+		"@radix-ui/react-toast": "^1.1.5",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.0.0",
+		"framer-motion": "^10.16.4",
+		"lucide-react": "^0.285.0",
+		"react": "^18.2.0",
+		"react-countup": "^6.5.3",
+		"react-dom": "^18.2.0",
+		"tailwind-merge": "^1.14.0",
+		"tailwindcss-animate": "^1.0.7"
+	},
+	"devDependencies": {
+		"@types/node": "^20.8.3",
+		"@types/react": "^18.2.15",
+		"@types/react-dom": "^18.2.7",
+		"@vitejs/plugin-react": "^4.0.3",
+		"autoprefixer": "^10.4.16",
+		"postcss": "^8.4.31",
+		"tailwindcss": "^3.3.3",
+		"vite": "^4.4.5"
+	}
 }
