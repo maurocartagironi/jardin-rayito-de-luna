@@ -3,15 +3,15 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 const addTransformIndexHtml = {
-	name: 'add-transform-index-html',
-	transformIndexHtml(html) {
-		return {
-			html,
-			tags: [
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: `
+    name: 'add-transform-index-html',
+    transformIndexHtml(html) {
+        return {
+            html,
+            tags: [
+                {
+                    tag: 'script',
+                    attrs: { type: 'module' },
+                    children: `
 						window.onerror = (message, source, lineno, colno, errorObj) => {
 							window.parent.postMessage({
 								type: 'horizons-runtime-error',
@@ -23,12 +23,12 @@ const addTransformIndexHtml = {
 							}, '*');
 						};
 					`,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: `
+                    injectTo: 'head',
+                },
+                {
+                    tag: 'script',
+                    attrs: { type: 'module' },
+                    children: `
 						const observer = new MutationObserver((mutations) => {
 							for (const mutation of mutations) {
 								for (const addedNode of mutation.addedNodes) {
@@ -74,12 +74,12 @@ const addTransformIndexHtml = {
 							}
 						}
 					`,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: {type: 'module'},
-					children: `
+                    injectTo: 'head',
+                },
+                {
+                    tag: 'script',
+                    attrs: { type: 'module' },
+                    children: `
 						const originalConsoleError = console.error;
 						console.error = function(...args) {
 							originalConsoleError.apply(console, args);
@@ -92,26 +92,34 @@ const addTransformIndexHtml = {
 							}, '*');
 						};
 					`,
-					injectTo: 'head',
-				},
-			],
-		};
-	},
+                    injectTo: 'head',
+                },
+            ],
+        };
+    },
 };
 
 export default defineConfig({
-	plugins: [react(), addTransformIndexHtml],
-	server: {
-		cors: true,
-		headers: {
-			'Cross-Origin-Embedder-Policy': 'credentialless',
-		},
-		allowedHosts: true,
-	},
-	resolve: {
-		extensions: ['.jsx', '.js', '.tsx', '.ts', '.json', ],
-		alias: {
-			'@': path.resolve(__dirname, './src'),
-		},
-	},
+    plugins: [react(), addTransformIndexHtml],
+    server: {
+        cors: true,
+        /*headers: {
+            'Cross-Origin-Embedder-Policy': 'credentialless',
+        },*/
+        headers: {
+            'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+            'Cross-Origin-Embedder-Policy': 'unsafe-none',
+        },
+        allowedHosts: true,
+    },
+    resolve: {
+        extensions: ['.jsx', '.js', '.tsx', '.ts', '.json'],
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+            '@components': path.resolve(__dirname, 'src/components'),
+            '@pages': path.resolve(__dirname, 'src/pages'),
+            '@utils': path.resolve(__dirname, 'src/utils'),
+            '@assets': path.resolve(__dirname, 'src/assets'),
+        },
+    },
 });
