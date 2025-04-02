@@ -26,6 +26,9 @@
         --secondary: 0 65% 85%;
         --secondary-foreground: 0 50% 30%;
 
+        --third: 1 80% 60%;
+        --third-foreground: 0 50% 20%;
+
         --muted: 155 30% 96%;
         --muted-foreground: 155 20% 40%;
 

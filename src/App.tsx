@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -14,6 +13,7 @@ import Noticias from '@/pages/Noticias';
 import Contactanos from '@pages/Contactanos';
 import Login from '@pages/Login';
 import Dashboard from '@pages/auth/Dashboard';
+import ProtectedRoute from './utils/ProtectedRoute';
 
 const App: React.FC = () => {
     return (
@@ -29,7 +29,16 @@ const App: React.FC = () => {
                     <Route path="/noticias" element={<Noticias />} />
                     <Route path="/contactanos" element={<Contactanos />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+
+                    {/* ✅ Ruta protegida correctamente */}
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
                 </Route>
             </Routes>
         </Router>

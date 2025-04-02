@@ -32,9 +32,9 @@ const Header: FC = () => {
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center">
                         <img
-                            src="./src/assets/img/logo.png" // Ajustá si tu ruta de imagen es diferente
+                            src="./src/assets/img/LogoBW.png"
                             alt="Logo"
-                            className="h-14 w-14"
+                            className="h-12 py-1"
                         />
                     </div>
 

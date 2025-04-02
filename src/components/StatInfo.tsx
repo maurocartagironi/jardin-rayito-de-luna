@@ -1,4 +1,4 @@
-import StatItem from '../types/StatItem';
+import StatItem from '@/types/StatItem';
 import CountUp from 'react-countup';
 import { motion } from 'framer-motion';
 

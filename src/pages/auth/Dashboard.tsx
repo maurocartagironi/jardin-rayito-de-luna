@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
             setUser(currentUser);
             if (!currentUser) {
-                navigate('/login'); // redirige si no hay sesión
+                console.log('Usuario no autorizado');
             }
         });
 
