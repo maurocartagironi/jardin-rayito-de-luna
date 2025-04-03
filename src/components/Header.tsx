@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { Link, useLocation } from 'react-router-dom';
+import logo from '@/assets/img/LogoBW.png';
 
 interface MenuItem {
     id: string;
@@ -31,11 +32,7 @@ const Header: FC = () => {
             <div className="max-w-6xl mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center">
-                        <img
-                            src="./src/assets/img/LogoBW.png"
-                            alt="Logo"
-                            className="h-12 py-1"
-                        />
+                        <img src={logo} alt="Logo" className="h-12 py-1" />
                     </div>
 
                     {/* Desktop Navigation */}
