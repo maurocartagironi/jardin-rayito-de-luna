@@ -4,7 +4,7 @@ const SobreNosotros: React.FC = () => {
     return (
         <div className="max-w-6xl mx-auto px-4 py-12">
             <h2 className="text-3xl font-bold text-center mb-8 text-primary">
-                Sobre Nosotros
+                Sobre nosotros
             </h2>
             <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="shadow-lg rounded-lg overflow-hidden">
@@ -16,7 +16,7 @@ const SobreNosotros: React.FC = () => {
                 </div>
                 <div>
                     <h3 className="text-2xl font-semibold mb-4 text-primary">
-                        Nuestra Historia
+                        Nuestra historia
                     </h3>
                     <p className="text-lg text-gray-600 mb-6">
                         Desde 2010, Mi Rayito de Luna ha sido un segundo hogar

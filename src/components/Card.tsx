@@ -9,12 +9,12 @@ interface CardProps {
 
 const Card: FC<CardProps> = ({ title, description, image, icon }) => {
     return (
-        <div className="cursor-default border-2 border-red-300 rounded-2xl shadow-md hover:shadow-xl transition-transform hover:-translate-y-1 bg-white overflow-hidden text-center">
+        <div className="cursor-default border-2 border-red-300 rounded-2xl shadow-md transition-transform hover:-translate-y-1 bg-white overflow-hidden text-center">
             {image ? (
                 <img
                     src={image}
                     alt={title}
-                    className="w-full h-48 object-cover rounded-t-2xl"
+                    className="w-full h-48 object-cover rounded-t-2xl mb-5"
                 />
             ) : (
                 <div className="w-16 h-16 mx-auto mt-6 mb-4 flex items-center justify-center rounded-full bg-red-100 text-3xl shadow-inner">

@@ -15,7 +15,7 @@ const Inscripcion: React.FC = () => {
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                    <div className="cursor-default border-2 border-red-300 rounded-2xl shadow-md transition-transform hover:-translate-y-1 bg-white overflow-hidden text-center p-6">
                         <h3 className="text-xl font-semibold text-primary mb-4">
                             Requisitos
                         </h3>

@@ -1,4 +1,33 @@
+import Card from '@components/Card';
+
 export const Beneficios: React.FC = () => {
+    const data = [
+        {
+            title: 'Acompañamiento afectivo',
+            icon: '❤️',
+        },
+        {
+            title: 'Juego como motor del aprendizaje',
+            icon: '🎨',
+        },
+        {
+            title: 'Estimulación temprana integral',
+            icon: '🧠',
+        },
+        {
+            title: 'Vínculo cercano con las familias',
+            icon: '👩‍🏫',
+        },
+        {
+            title: 'Educación emocional',
+            icon: '🧘‍♀️',
+        },
+        {
+            title: 'Hábitos saludables',
+            icon: '🍎',
+        },
+    ];
+
     return (
         <section className="bg-muted py-16">
             <div className="max-w-6xl mx-auto px-4">
@@ -6,20 +35,14 @@ export const Beneficios: React.FC = () => {
                     Nuestros pilares
                 </h2>
                 <div className="grid md:grid-cols-3 gap-6">
-                    {[
-                        'Educación emocional',
-                        'Alimentación saludable',
-                        'Instalaciones seguras',
-                        'Estimulación temprana',
-                        'Profes de confianza',
-                        'Comunicación con familias',
-                    ].map((item, index) => (
+                    {data.map((item, index) => (
                         <div
                             key={index}
-                            className="p-6 bg-white rounded-2xl shadow text-center"
+                            className="p-6 bg-white rounded-2xl shadow text-center flex items-center justify-center"
                         >
-                            <div className="feature-icon mb-3">{index + 1}</div>
-                            <p className="text-lg font-medium">{item}</p>
+                            <p className="text-lg font-medium">
+                                {item.icon} {item.title}
+                            </p>
                         </div>
                     ))}
                 </div>

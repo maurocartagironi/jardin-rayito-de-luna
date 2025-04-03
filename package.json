@@ -27,6 +27,8 @@
         "react-countup": "^6.5.3",
         "react-dom": "^18.2.0",
         "react-router-dom": "^7.4.1",
+        "react-slick": "^0.30.3",
+        "slick-carousel": "^1.8.1",
         "tailwind-merge": "^1.14.0",
         "tailwindcss-animate": "^1.0.7"
     },
@@ -34,6 +36,7 @@
         "@types/node": "^20.8.3",
         "@types/react": "^18.2.15",
         "@types/react-dom": "^18.2.7",
+        "@types/react-slick": "^0.23.13",
         "@vitejs/plugin-react": "^4.0.3",
         "autoprefixer": "^10.4.16",
         "postcss": "^8.4.31",

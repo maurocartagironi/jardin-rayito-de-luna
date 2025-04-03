@@ -14,7 +14,7 @@ const menuItems: MenuItem[] = [
     { id: 'actividades', label: 'Actividades' },
     { id: 'instalaciones', label: 'Instalaciones' },
     { id: 'galeria', label: 'Galería' },
-    { id: 'sobrenosotros', label: 'Sobre Nosotros' },
+    { id: 'sobrenosotros', label: 'Sobre nosotros' },
     { id: 'inscripcion', label: 'Inscripción' },
     { id: 'noticias', label: 'Noticias' },
     { id: 'contactanos', label: 'Contáctanos' },

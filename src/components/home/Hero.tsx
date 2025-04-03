@@ -7,7 +7,7 @@ const heroData = [
         title: 'Donde cada día florece una nueva aventura',
         description:
             'Un espacio lleno de amor, juego y aprendizaje para que tu hijo crezca feliz.',
-        image: '/images/hero1.jpg',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b',
         button: {
             text: 'Conocenos',
             position: 'center',
@@ -18,14 +18,14 @@ const heroData = [
         title: 'Jugamos, exploramos y aprendemos juntos',
         description:
             'Actividades diseñadas para estimular la creatividad y el desarrollo emocional.',
-        image: '/images/hero2.jpg',
+        image: 'https://images.unsplash.com/photo-1608633650126-999ff4c747e0',
         button: null,
     },
     {
         title: 'Tu hijo en las mejores manos',
         description:
             'Docentes comprometidas, espacios seguros y un entorno de contención y amor.',
-        image: '/images/hero3.jpg',
+        image: 'https://images.unsplash.com/photo-1604881991720-f91add269bed',
         button: {
             text: 'Inscribite ahora',
             position: 'bottom',
