@@ -5,6 +5,7 @@ import { Actividades } from '@components/home/Actividades';
 import { Testimonios } from '@components/home/Testimonios';
 import { Galeria } from '@components/home/Galeria';
 import { Contacto } from '@components/home/Contacto';
+import Noticias from './Noticias';
 
 export default function Home() {
     return (
@@ -13,8 +14,9 @@ export default function Home() {
             <Nosotros />
             <Beneficios />
             <Actividades />
-            <Testimonios />
             <Galeria />
+            <Noticias />
+            <Testimonios />
             <Contacto />
         </div>
     );

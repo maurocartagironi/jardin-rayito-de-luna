@@ -11,7 +11,7 @@ const heroData = [
         button: {
             text: 'Conocenos',
             position: 'center',
-            link: '#',
+            link: '/sobrenosotros',
         },
     },
     {

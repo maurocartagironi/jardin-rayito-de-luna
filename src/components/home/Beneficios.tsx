@@ -38,11 +38,10 @@ export const Beneficios: React.FC = () => {
                     {data.map((item, index) => (
                         <div
                             key={index}
-                            className="p-6 bg-white rounded-2xl shadow text-center flex items-center justify-center"
+                            className="p-6 bg-white rounded-2xl shadow flex items-center gap-4"
                         >
-                            <p className="text-lg font-medium">
-                                {item.icon} {item.title}
-                            </p>
+                            <div className="text-2xl">{item.icon}</div>
+                            <p className="text-lg font-medium">{item.title}</p>
                         </div>
                     ))}
                 </div>

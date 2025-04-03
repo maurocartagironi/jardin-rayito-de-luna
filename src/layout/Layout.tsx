@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import Topbar from '@/components/Topbar';
-import Header from '@/components/Header';
+import Topbar from '@components/Topbar';
+import Header from '@components/Header';
 import { Outlet } from 'react-router-dom';
-import Footer from '@/components/Footer';
+import Footer from '@components/Footer';
+import FloatingContactButton from '@components/FloatingContactButton';
 
 const Layout = () => {
     const [showHeader, setShowHeader] = useState(true);
@@ -69,6 +70,7 @@ const Layout = () => {
 
             <main className="flex-1">
                 <Outlet />
+                <FloatingContactButton />
             </main>
             <Footer />
         </div>

@@ -46,6 +46,23 @@
     }
 }
 
+@layer utilities {
+    @keyframes fade-in-up {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in-up {
+        animation: fade-in-up 0.3s ease-out;
+    }
+}
+
 @layer base {
     * {
         @apply border-border;
@@ -81,6 +98,39 @@
     100% {
         background-position: 0% 50%;
     }
+}
+
+/* Scroll personalizado solo en el modal */
+.modal-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(204, 204, 204, 0.7); /* gris clarito */
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.truncate-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ Truncar a 2 líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Firefox */
+.modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(204, 204, 204, 0.7) transparent;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 .nav-link {

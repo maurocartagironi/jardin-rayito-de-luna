@@ -1,5 +1,12 @@
 import { FC } from 'react';
-import { Facebook, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import {
+    Facebook,
+    Instagram,
+    Triangle,
+    Mail,
+    Phone,
+    MapPin,
+} from 'lucide-react';
 
 const Footer: FC = () => {
     return (
@@ -8,7 +15,7 @@ const Footer: FC = () => {
                 {/* Logo y nombre */}
                 <div>
                     <h2 className="text-2xl font-bold text-red-500 mb-2">
-                        Mi Rayito de Luna
+                        Mi rayito de Luna
                     </h2>
                     <p className="text-sm text-gray-600">
                         Un espacio donde los niños crecen jugando, creando y
@@ -29,15 +36,15 @@ const Footer: FC = () => {
                         </li>
                         <li>
                             <a
-                                href="#actividades"
+                                href="/sobrenosotros"
                                 className="hover:text-red-400"
                             >
-                                Actividades
+                                Quienes somos
                             </a>
                         </li>
                         <li>
                             <a
-                                href="#instalaciones"
+                                href="/instalaciones"
                                 className="hover:text-red-400"
                             >
                                 Instalaciones
@@ -45,10 +52,15 @@ const Footer: FC = () => {
                         </li>
                         <li>
                             <a
-                                href="#contactanos"
+                                href="/inscripcion"
                                 className="hover:text-red-400"
                             >
-                                Contacto
+                                Inscripción
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/galeria" className="hover:text-red-400">
+                                Galería
                             </a>
                         </li>
                     </ul>
@@ -95,12 +107,19 @@ const Footer: FC = () => {
                         >
                             <Instagram className="h-5 w-5 hover:text-red-400" />
                         </a>
+                        <a
+                            href="https://tiktok.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Triangle className="h-5 w-5 hover:text-red-400" />
+                        </a>
                     </div>
                 </div>
             </div>
 
             <div className="border-t border-gray-200 mt-8 pt-4 text-center text-sm text-gray-500">
-                © {new Date().getFullYear()} Mi Rayito de Luna. Todos los
+                © {new Date().getFullYear()} Mi rayito de Luna. Todos los
                 derechos reservados.
             </div>
         </footer>

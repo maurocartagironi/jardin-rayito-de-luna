@@ -1,9 +1,9 @@
 import { FC, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/Button';
+import { Button } from '@components/Button';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '@/assets/img/LogoBW.png';
+import logo from '@assets/img/LogoBW.png';
 
 interface MenuItem {
     id: string;
@@ -11,14 +11,11 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-    { id: 'home', label: 'Home' },
-    { id: 'actividades', label: 'Actividades' },
+    { id: 'home', label: 'Inicio' },
+    { id: 'sobrenosotros', label: 'Quienes somos' },
     { id: 'instalaciones', label: 'Instalaciones' },
-    { id: 'galeria', label: 'Galería' },
-    { id: 'sobrenosotros', label: 'Sobre nosotros' },
     { id: 'inscripcion', label: 'Inscripción' },
-    { id: 'noticias', label: 'Noticias' },
-    { id: 'contactanos', label: 'Contáctanos' },
+    { id: 'galeria', label: 'Galería' },
 ];
 
 const Header: FC = () => {

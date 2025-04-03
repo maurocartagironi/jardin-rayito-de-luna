@@ -18,7 +18,7 @@ export const Contacto = () => {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 border-2 border-primary hover:border-white text-white font-medium text-lg px-4 py-2 rounded-xl transition"
+                className="inline-flex items-center gap-3 border-2 text-white font-medium text-lg px-4 py-2 rounded-xl transition border-white md:border-primary hover:border-white"
             >
                 <img
                     className="w-10 h-10"

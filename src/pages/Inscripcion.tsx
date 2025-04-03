@@ -1,3 +1,4 @@
+import { Button } from '@/components/Button';
 import React from 'react';
 
 /**
@@ -8,6 +9,14 @@ import React from 'react';
  * @returns {JSX.Element} Componente de la página de Inscripción
  */
 const Inscripcion: React.FC = () => {
+    const data = {
+        phoneNumber: '5491123456789',
+        message: 'Hola, me gustaría obtener más información sobre el jardín.',
+    };
+
+    const encodedMessage = encodeURIComponent(data.message);
+    const whatsappLink = `https://wa.me/${data.phoneNumber}?text=${encodedMessage}`;
+
     return (
         <div className="max-w-6xl mx-auto px-4 py-12">
             <h2 className="text-3xl font-bold text-center mb-8 text-primary">
@@ -15,7 +24,7 @@ const Inscripcion: React.FC = () => {
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
-                    <div className="cursor-default border-2 border-red-300 rounded-2xl shadow-md transition-transform hover:-translate-y-1 bg-white overflow-hidden text-center p-6">
+                    <div className="cursor-default border-2 border-red-300 rounded-2xl shadow-md bg-white overflow-hidden text-left p-6">
                         <h3 className="text-xl font-semibold text-primary mb-4">
                             Requisitos
                         </h3>
@@ -39,9 +48,9 @@ const Inscripcion: React.FC = () => {
                             ))}
                         </ul>
                     </div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                    <div className="cursor-default border-2 border-red-300 rounded-2xl shadow-md bg-white overflow-hidden text-left p-6">
                         <h3 className="text-xl font-semibold text-primary mb-4">
-                            Horarios Disponibles
+                            Horarios disponibles
                         </h3>
                         <div className="space-y-3 text-gray-600">
                             <p className="flex items-center gap-2">
@@ -60,9 +69,9 @@ const Inscripcion: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-lg">
+                <div className="cursor-default border-2 border-red-300 rounded-2xl shadow-md bg-white overflow-hidden text-left p-6">
                     <h3 className="text-xl font-semibold text-primary mb-4">
-                        Pasos para la Inscripción
+                        Pasos para la inscripción
                     </h3>
                     <div className="space-y-4">
                         {[
@@ -101,9 +110,18 @@ const Inscripcion: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="mt-8">
-                        {/* Este espacio puede ser un botón en el futuro */}
-                        Solicitar Información
+                    <div className="mt-8 flex justify-center">
+                        <a
+                            href={whatsappLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-3 text-white bg-primary hover:bg-primary/80 font-medium text-lg px-4 py-2 rounded-xl transition border-white md:border-primary hover:border-white"
+                        >
+                            Solicitar información
+                        </a>
+                    </div>
+                    <div className="text-primary/90 mt-8 flex justify-left">
+                        Horario de atención: Lunes a viernes de 9:00 a 18:00
                     </div>
                 </div>
             </div>
