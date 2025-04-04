@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "mi-rayito-de-luna",
+  "private_key_id": "4a9329961489c02f605644ee7a8eb2d2dbf4086a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQD4ZT3lYNF9AgEH\n9qScIXLmm9JEz/THxfq5e3NahL5A/Q1APBsPzC/+igigpcvOPTSle3bQoq3RS2a6\nYob3oLVIISsHynpyBQ3kUzIj+P0br/RJrSiAmfZZUfPNm6QecjQL5vWnH4RqCYZO\nLNYddcf0qMTvDFtqtYfXc8xdQ7FaLvuXMk1Xo4BlnEs6wtgTKnc3GmjmcvaH0SSQ\n7zq+n8zGPlSnEJOfdTCOg3EK++HwSUzYSf/xerIOQ3liqqI6zVJ9hd6/9BAIAjOw\n/Q6XkTXWROd2s1TJQF01T8dsDSeLB6IBrUQ00D/hRxN3Vpca49B/CseuLMmftxdE\nWQqYes5BAgMBAAECggEAUasb2CxmhDbh9ufRhGH9ALRPxH8pKHu/7TcZHLRTR1PM\nBQgeD6ofR43Du2n3odX+1r/Kt1sdUhh77KETZhxpLg91seiRLKbbw+vUqv4k3fMS\nmxy7GdlFJWXsBnh7U+VRlm4361xR8XkzNsXIGkSM2zSYF06VSfbodF6m3S0yBQeS\nr6do+0Bck5AQYo7n/A1f4utiiXXc2mo1oBPMgrpu+NULiSinjXOzfOP7WIq0ekn5\nRTcl29fpJPnaMlB2oHFXBFGswT6nQmmJbY9sCPfGp/o92WIDT76YuUr4DWP0PXvN\nWx8wrdcIkjL/Qhh4JRJjloDvLoOtrGgazULA7wS9TwKBgQD8e26Q42d6sDaxzTeZ\nArlDO13Ckd1jdHL45kCah6RtDQOY1Yrd6bZWC/QuSots4DS1f0GdbEphRRRaR9ny\nT7c8tlDxU3p5nGpvESA6QgNveWCtNjMD7Rrg6sX+AGizGxKUt+57PrkZnzaTwch5\nexSnclAOZ6pwayhXFuzajUSbhwKBgQD72zu30Azz8R0ajt8x77+D/x6kepYCp/oq\nAAEl+UAVb6bhK0Xj1GUQz020vbfOh9zN9hRCPYz5OGZMq9pslFbrLxDYQ94iVr6d\nL2tTZNo83Tp1vkQt4s6Bz6LAAzqBwybK4C2xqCmGKBMVW5XrIvjZEec3APwcn9xu\nLBvv3ecJ9wKBgCHTN4DZtmdNbEZtw+EP6FoFfg4vFIXad/y4fDc3rOOfNrgnA6+v\nO+pTN6dr/Tnc37LhFZ1NgLl/U7a0oZJA87+CfV2XXXUla2zt0m97oJIypK0P8c24\n2jz/tv7Mdzpnihm6eoywXoP8PIeXEpCT2LSGMAt9/+uHr6PbQmgVPPfJAoGAEyNR\nomIY2eCUiZQZub2yG+Gi/nSiOYlyJQbjD3OlPvvA/pM/OFTHaUOXcAiKkxMX4D62\nw2HR+I4kl+bnLiEHic+FxClEE+/rhB46VZfwTXeyHYhbvfDiKFMS1uxn4bxmkjv+\nvOU+YodhC9ptxfReXIBTxYY5oiMzqNuJM+z0xXkCgYEAm2zjHrB8xLhiJp++ippU\nAQw0zb61JAFVit9j39rvxcGA8PtmK3HCPcKs+Z3BkeXpYWl2Umz3xZ+BBmXiQ3kz\nzA70kpaNKUzkou686RExZAuoGwW9L8XwLGrxDa91H0TMSpaZ+R/4sgwpg3SvbuUz\ngRPOXbMf+c/2zAIWfbC0PGM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@mi-rayito-de-luna.iam.gserviceaccount.com",
+  "client_id": "107667441778174356071",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40mi-rayito-de-luna.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

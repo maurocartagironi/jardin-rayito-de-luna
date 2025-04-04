@@ -8,7 +8,7 @@ import {
     AuthError,
     User,
 } from 'firebase/auth';
-import { auth, googleProvider, facebookProvider } from '@/firebase';
+import { auth, googleProvider } from '@/firebase';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
@@ -76,8 +76,8 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-muted px-4 py-10">
-            <div className="w-full max-w-md bg-card text-card-foreground shadow-xl rounded-xl p-8 font-[SalesforceSans]">
+        <div className="flex items-baseline justify-center bg-muted px-4 py-10">
+            <div className="w-full max-w-md bg-card text-card-foreground shadow-md rounded-xl p-8 font-[SalesforceSans]">
                 <h2 className="text-3xl font-bold text-center mb-6 rainbow-text">
                     Iniciar sesión
                 </h2>
@@ -141,20 +141,6 @@ const Login: React.FC = () => {
                             className="w-5 h-5"
                         />
                         Google
-                    </button>
-
-                    <button
-                        onClick={() =>
-                            handleLoginWithProvider(facebookProvider)
-                        }
-                        className="w-full flex items-center justify-center gap-2 bg-[#1877f2] text-white py-2 rounded-md hover:opacity-90 transition"
-                    >
-                        <img
-                            src="https://www.svgrepo.com/show/303117/facebook-2-logo.svg"
-                            alt="Facebook"
-                            className="w-5 h-5"
-                        />
-                        Facebook
                     </button>
                 </div>
 

@@ -13,8 +13,11 @@ import Noticias from '@/pages/Noticias';
 import Login from '@pages/Login';
 import Dashboard from '@pages/auth/Dashboard';
 import ProtectedRoute from './utils/ProtectedRoute';
+import Registracion from './pages/Registracion';
 
 const App: React.FC = () => {
+    const hasConfigLogin = import.meta.env.VITE_ENABLE_LOGIN_USER === 'true';
+
     return (
         <Router>
             <Routes>
@@ -26,17 +29,23 @@ const App: React.FC = () => {
                     <Route path="/sobrenosotros" element={<SobreNosotros />} />
                     <Route path="/inscripcion" element={<Inscripcion />} />
                     <Route path="/noticias" element={<Noticias />} />
-                    <Route path="/login" element={<Login />} />
-
-                    {/* ✅ Ruta protegida correctamente */}
-                    <Route
-                        path="/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <Dashboard />
-                            </ProtectedRoute>
-                        }
-                    />
+                    {hasConfigLogin && (
+                        <>
+                            <Route
+                                path="/register"
+                                element={<Registracion />}
+                            />
+                            <Route path="/login" element={<Login />} />
+                            <Route
+                                path="/dashboard"
+                                element={
+                                    <ProtectedRoute>
+                                        <Dashboard />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </>
+                    )}
                 </Route>
             </Routes>
         </Router>

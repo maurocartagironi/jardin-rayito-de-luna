@@ -41,7 +41,7 @@ export const Testimonios = () => {
     };
 
     return (
-        <section className="bg-gray-100 py-16">
+        <section className="bg-gray-100 py-16 z-10">
             <div className="max-w-4xl mx-auto px-4">
                 <h2 className="text-3xl font-semibold text-center mb-8">
                     Lo que dicen las familias

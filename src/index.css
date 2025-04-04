@@ -100,6 +100,15 @@
     }
 }
 
+input:-webkit-autofill {
+    box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #000 !important;
+}
+
+.grecaptcha-badge {
+    top: 95px !important;
+}
+
 /* Scroll personalizado solo en el modal */
 .modal-scroll::-webkit-scrollbar {
     width: 8px;
