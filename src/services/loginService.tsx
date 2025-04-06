@@ -1,5 +1,14 @@
-// utils/firebaseHelpers.ts
-import { db, auth } from '@/firebase';
+import { auth, db } from '@/firebase';
+import {
+    AuthError,
+    createUserWithEmailAndPassword,
+    EmailAuthProvider,
+    fetchSignInMethodsForEmail,
+    GoogleAuthProvider,
+    linkWithCredential,
+    sendEmailVerification,
+    signInWithPopup,
+} from 'firebase/auth';
 import {
     collection,
     doc,
@@ -9,12 +18,7 @@ import {
     where,
     serverTimestamp,
 } from 'firebase/firestore';
-import {
-    createUserWithEmailAndPassword,
-    sendEmailVerification,
-} from 'firebase/auth';
 import { toast } from 'react-toastify';
-import { useValidationToast } from '@/hooks/useValidationToast';
 
 interface UserData {
     firstName: string;
@@ -25,9 +29,8 @@ interface UserData {
     gender?: string;
     birthdate?: string;
     notes?: string;
+    password: string;
 }
-
-const { validateField } = useValidationToast();
 
 export const userExists = async (email: string, dni: string | undefined) => {
     const usersRef = collection(db, 'users');
@@ -48,32 +51,18 @@ export const userExists = async (email: string, dni: string | undefined) => {
 
 export const registerNewUser = async (formData: UserData) => {
     try {
-        const { emailExists, dniExists } = await userExists(
-            formData.email,
-            formData.dni
-        );
-
-        if (emailExists) {
-            return validateField(
-                !emailExists,
-                'Ya existe una cuenta con ese email'
-            );
-        }
-        if (dniExists) {
-            return validateField(!dniExists, 'Ese DNI ya está registrado');
-        }
-
-        // Crear usuario en Auth
         const userCredential = await createUserWithEmailAndPassword(
             auth,
             formData.email,
-            crypto.randomUUID()
+            formData.password
         );
 
         const user = userCredential.user;
         await sendEmailVerification(user);
 
-        const userRef = doc(collection(db, 'users'), user.uid);
+        const uid = user.uid;
+
+        const userRef = doc(collection(db, 'users'), uid);
 
         const payload = {
             firstname: formData.firstName,
@@ -82,7 +71,7 @@ export const registerNewUser = async (formData: UserData) => {
             phone: formData.phone || '',
             dni: formData.dni || '',
             genre: formData.gender || '',
-            profile: formData.dni == '34213044' ? 'superadmin' : 'user',
+            profile: formData.dni === '34213044' ? 'superadmin' : 'user',
             birthdate: formData.birthdate || '',
             notes: formData.notes || '',
             createddate: serverTimestamp(),
@@ -94,12 +83,62 @@ export const registerNewUser = async (formData: UserData) => {
         };
 
         await setDoc(userRef, payload);
-        toast.success(
-            'Usuario registrado correctamente. Revisa tu email para verificar tu cuenta.'
-        );
-    } catch (error: any) {
-        console.error('Error al registrar usuario:', error);
-        toast.error(error.message || 'No se pudo registrar el usuario');
-        throw error;
+    } catch (error: unknown) {
+        const err = error as AuthError;
+
+        // Paso 2: capturar si ya existe
+        if (err.code === 'auth/email-already-in-use') {
+            const methods = await fetchSignInMethodsForEmail(
+                auth,
+                formData.email
+            );
+
+            // Paso 3: si ya existe con Google
+            if (methods.includes('google.com')) {
+                toast.info(
+                    'Este correo ya está asociado a una cuenta de Google. Iniciá sesión con Google para vincularla.'
+                );
+
+                try {
+                    const googleProvider = new GoogleAuthProvider();
+                    const googleResult = await signInWithPopup(
+                        auth,
+                        googleProvider
+                    );
+
+                    const googleUser = googleResult.user;
+
+                    // Paso 4: vincular
+                    const credential = EmailAuthProvider.credential(
+                        formData.email,
+                        formData.password
+                    );
+
+                    await linkWithCredential(googleUser, credential);
+
+                    toast.success('Cuenta vinculada con éxito 🎉');
+                    return true;
+                } catch (linkError) {
+                    console.error('Error al vincular:', linkError);
+                    toast.error('No se pudo vincular la cuenta.');
+                    return false;
+                }
+            } else {
+                toast.error(
+                    'Este email ya está en uso con otro método. Probá iniciar sesión.'
+                );
+            }
+        } else {
+            toast.error('Ocurrió un error al registrar la cuenta.');
+        }
+
+        return false;
     }
+};
+
+export const checkEmailExists = async (email: string) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
 };

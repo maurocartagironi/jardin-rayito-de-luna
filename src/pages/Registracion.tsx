@@ -1,23 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useValidationToast } from '@/hooks/useValidationToast';
-import { registerNewUser } from '@/services/loginService';
+import { useRegisterUser } from '@/hooks/useRegisterUser';
+import { checkEmailExists } from '@/services/loginService';
+import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '@/firebase';
+import { toast } from 'react-toastify';
 
 const Registracion = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const { validateField } = useValidationToast();
-
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        dni: '',
-        email: '',
-        phone: '',
-        gender: '',
-        birthdate: '',
-        notes: '',
-    });
-
     const [emailValid, setEmailValid] = useState(true);
+    const [emailConfirmValid, setEmailConfirmValid] = useState(true);
+    const { validateField } = useValidationToast();
+    const { formData, setFormData, isLoading, register, setIsLoading } =
+        useRegisterUser();
+    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -25,6 +23,8 @@ const Registracion = () => {
         script.async = true;
         document.body.appendChild(script);
     }, []);
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
 
     const allowedDomains = [
         'gmail.com',
@@ -40,10 +40,22 @@ const Registracion = () => {
         return regex.test(email) && allowedDomains.includes(domain);
     };
 
+    const isValidConfirmEmail = (email: string) => {
+        return email == formData.email;
+    };
+
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const email = e.target.value;
         setFormData((prev) => ({ ...prev, email }));
         setEmailValid(isValidEmail(email));
+    };
+
+    const handleEmailConfirmChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const confirmEmail = e.target.value;
+        setFormData((prev) => ({ ...prev, confirmEmail }));
+        setEmailConfirmValid(isValidConfirmEmail(confirmEmail));
     };
 
     const handleChange = (
@@ -51,12 +63,12 @@ const Registracion = () => {
             HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
         >
     ) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
         setIsLoading(true);
+        e.preventDefault();
 
         const validations = [
             validateField(
@@ -77,6 +89,18 @@ const Registracion = () => {
                 isValidEmail(formData.email),
                 'Email no válido (debe ser Gmail, Hotmail, etc.)'
             ),
+            validateField(
+                isValidEmail(formData.confirmEmail),
+                'Los correos no coinciden.'
+            ),
+            validateField(
+                formData.password === formData.confirmPassword,
+                'Las contraseñas no coinciden.'
+            ),
+            validateField(
+                passwordRegex.test(formData.password),
+                'La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número.'
+            ),
         ];
 
         if (validations.includes(false)) {
@@ -84,11 +108,24 @@ const Registracion = () => {
             return;
         }
 
+        const emailExists = await checkEmailExists(formData.email);
+        if (emailExists) {
+            validateField(false, 'Ya existe una cuenta con ese email.');
+            setIsLoading(false);
+            return;
+        }
         try {
-            await registerNewUser(formData);
-            // toast.success('¡Cuenta creada correctamente!');
+            const success = await register();
+
+            if (success) {
+                await auth.signOut();
+                toast.success(
+                    'La cuenta ha sido registrada correctamente, inicia sesión para activarla.'
+                );
+                navigate('/login');
+            }
         } catch (error) {
-            // Manejar errores (ya implementado dentro del service si usás toast ahí)
+            toast.error('Ha ocurrido un error al crear la cuenta.');
         } finally {
             setIsLoading(false);
         }
@@ -106,27 +143,32 @@ const Registracion = () => {
                     </div>
                 </div>
             )}
+
             <h1 className="text-2xl font-bold text-center mb-6 text-primary">
                 Registro
             </h1>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+                onSubmit={handleSubmit}
+                className="space-y-4"
+                autoComplete="off"
+            >
                 <div className="flex gap-4">
                     <input
                         type="text"
                         name="firstName"
                         placeholder="Nombre *"
-                        required
                         value={formData.firstName}
                         onChange={handleChange}
+                        required
                         className="w-full border rounded-lg px-3 py-2"
                     />
                     <input
                         type="text"
                         name="lastName"
                         placeholder="Apellido *"
-                        required
                         value={formData.lastName}
                         onChange={handleChange}
+                        required
                         className="w-full border rounded-lg px-3 py-2"
                     />
                 </div>
@@ -144,12 +186,10 @@ const Registracion = () => {
                     type="email"
                     name="email"
                     placeholder="Email *"
-                    required
                     value={formData.email}
                     onChange={handleEmailChange}
-                    className={`w-full border rounded-lg px-3 py-2 ${
-                        emailValid ? 'border-gray-300' : 'border-red-500'
-                    }`}
+                    required
+                    className={`w-full border rounded-lg px-3 py-2 ${emailValid ? 'border-gray-300' : 'border-red-500'}`}
                 />
                 {!emailValid && (
                     <span className="text-red-500 text-sm pl-3">
@@ -158,6 +198,23 @@ const Registracion = () => {
                     </span>
                 )}
 
+                <input
+                    type="email"
+                    name="confirmEmail"
+                    placeholder="Confirmar Email *"
+                    value={formData.confirmEmail}
+                    onChange={handleEmailConfirmChange}
+                    onPaste={(e) => e.preventDefault()}
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    required
+                    className={`w-full border rounded-lg px-3 py-2 ${emailConfirmValid ? 'border-gray-300' : 'border-red-500'}`}
+                />
+                {!emailConfirmValid && (
+                    <span className="text-red-500 text-sm pl-3">
+                        Los correos no coinciden.
+                    </span>
+                )}
                 <input
                     type="tel"
                     name="phone"
@@ -171,9 +228,15 @@ const Registracion = () => {
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className={`w-full border rounded-lg px-3 py-2 ${
+                        formData.gender === ''
+                            ? 'text-gray-400'
+                            : 'text-gray-700'
+                    }`}
                 >
-                    <option value="">Seleccioná un género</option>
+                    <option value="" disabled>
+                        Seleccioná un género
+                    </option>
                     <option value="femenino">Femenino</option>
                     <option value="masculino">Masculino</option>
                     <option value="otro">Otro</option>
@@ -187,16 +250,63 @@ const Registracion = () => {
                     name="birthdate"
                     value={formData.birthdate}
                     onChange={handleChange}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className={`w-full border rounded-lg px-3 py-2 ${
+                        formData.birthdate === ''
+                            ? 'text-gray-400'
+                            : 'text-gray-700'
+                    }`}
                 />
 
-                <textarea
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleChange}
-                    placeholder="Observaciones (alergias, tutor legal, etc.)"
-                    className="w-full border rounded-lg px-3 py-2"
-                />
+                <div className="relative">
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        placeholder="Contraseña *"
+                        value={formData.password}
+                        onChange={handleChange}
+                        autoComplete="new-password"
+                        className="w-full border rounded-lg px-3 py-2 pr-10"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                    >
+                        {showPassword ? (
+                            <EyeOff size={18} />
+                        ) : (
+                            <Eye size={18} />
+                        )}
+                    </button>
+                </div>
+
+                <div className="relative">
+                    <input
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        name="confirmPassword"
+                        placeholder="Validar contraseña *"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        onPaste={(e) => e.preventDefault()}
+                        onCopy={(e) => e.preventDefault()}
+                        onCut={(e) => e.preventDefault()}
+                        autoComplete="new-password"
+                        className="w-full border rounded-lg px-3 py-2 pr-10"
+                    />
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                    >
+                        {showConfirmPassword ? (
+                            <EyeOff size={18} />
+                        ) : (
+                            <Eye size={18} />
+                        )}
+                    </button>
+                </div>
 
                 <button
                     type="submit"

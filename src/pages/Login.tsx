@@ -7,9 +7,13 @@ import {
     FacebookAuthProvider,
     AuthError,
     User,
+    EmailAuthProvider,
+    linkWithCredential,
+    fetchSignInMethodsForEmail,
 } from 'firebase/auth';
 import { auth, googleProvider } from '@/firebase';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -64,14 +68,53 @@ const Login: React.FC = () => {
         provider: GoogleAuthProvider | FacebookAuthProvider
     ) => {
         try {
+            // 🔒 Autenticación con popup
             const result = await signInWithPopup(auth, provider);
-            console.log('Usuario logueado:', result.user);
-            setUser(result.user);
+            const user = result.user;
+            const email = user.email;
+
+            if (!email) {
+                toast.error('No se pudo obtener el email del proveedor.');
+                return;
+            }
+
+            // 🔍 Verificar si ya hay métodos registrados para ese email
+            const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+            if (
+                signInMethods.includes('password') &&
+                !user.providerData.some(
+                    (p) => p.providerId === provider.providerId
+                )
+            ) {
+                // Si el usuario ya se registró con email/password, lo vinculamos
+                const password = prompt(
+                    'Este email ya está registrado. Por favor, ingresá tu contraseña para vincular tu cuenta.'
+                );
+
+                if (!password) return;
+
+                const credential = EmailAuthProvider.credential(
+                    email,
+                    password
+                );
+
+                await linkWithCredential(user, credential);
+                toast.success('¡Cuenta vinculada correctamente!');
+            }
+
+            // Todo ok: logueado
             navigate('/dashboard');
         } catch (error: unknown) {
             const err = error as AuthError;
-            console.error('Error con login popup:', err.message);
-            setError(err.message);
+            if (err.code === 'auth/account-exists-with-different-credential') {
+                toast.error(
+                    'Ya existe una cuenta con este email pero con otro método de autenticación.'
+                );
+            } else {
+                toast.error('Error al iniciar sesión con proveedor.');
+                console.error('Error con login popup:', err.message);
+            }
         }
     };
 
