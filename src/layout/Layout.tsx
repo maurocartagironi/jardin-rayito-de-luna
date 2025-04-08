@@ -6,6 +6,7 @@ import Footer from '@components/Footer';
 import FloatingContactButton from '@components/FloatingContactButton';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const Layout = () => {
     const [showHeader, setShowHeader] = useState(true);
@@ -39,43 +40,49 @@ const Layout = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-background font-rayito flex flex-col">
-            {/* Header sticky: aparece al hacer scroll arriba */}
-            <div
-                className={`sticky z-50 transition-all duration-500 bg-white shadow-sm h-14 md:h-16 ${
-                    showHeader || isMenuOpen ? 'top-0' : '-top-20'
-                }`}
-            >
-                <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-            </div>
+        <>
+            <ScrollToTop />
+            <div className="min-h-screen bg-background font-rayito flex flex-col">
+                {/* Header sticky: aparece al hacer scroll arriba */}
+                <div
+                    className={`sticky z-50 transition-all duration-500 bg-white shadow-sm h-14 md:h-16 ${
+                        showHeader || isMenuOpen ? 'top-0' : '-top-20'
+                    }`}
+                >
+                    <Header
+                        isMenuOpen={isMenuOpen}
+                        setIsMenuOpen={setIsMenuOpen}
+                    />
+                </div>
 
-            {/* Topbar sticky: aparece al hacer scroll abajo */}
-            <div
-                className={`sticky z-40 transition-all duration-500 bg-white shadow-sm h-9
+                {/* Topbar sticky: aparece al hacer scroll abajo */}
+                <div
+                    className={`sticky z-40 transition-all duration-500 bg-white shadow-sm h-9
         ${showHeader && !isMenuOpen ? '-top-20' : 'top-0'} 
         ${scrollOnTop ? 'hidden' : 'md:block'} 
         hidden`}
-            >
-                <Topbar />
-            </div>
+                >
+                    <Topbar />
+                </div>
 
-            <main className="flex-1">
-                <Outlet />
-                <FloatingContactButton />
-            </main>
-            <Footer />
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={true}
-                newestOnTop={true}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
-        </div>
+                <main className="flex-1">
+                    <Outlet />
+                    <FloatingContactButton />
+                </main>
+                <Footer />
+                <ToastContainer
+                    position="top-center"
+                    autoClose={3000}
+                    hideProgressBar={true}
+                    newestOnTop={true}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
+            </div>
+        </>
     );
 };
 

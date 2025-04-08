@@ -1,3 +1,6 @@
+import { getImagePath } from '@/utils/images.utils';
+import { convertDate } from '@/utils/utils';
+import { Timestamp } from 'firebase/firestore';
 import { FC, ReactNode } from 'react';
 
 interface CardProps {
@@ -6,14 +9,17 @@ interface CardProps {
     image?: string;
     icon?: ReactNode;
     iconUrl?: string;
+    type?: string;
     hasTranslate?: boolean;
-    date: string;
+    imagetext?: string;
+    date?: Timestamp;
 }
 
 const Card: FC<CardProps> = ({
     title,
     description,
     image,
+    type,
     icon,
     iconUrl,
     hasTranslate = true,
@@ -26,7 +32,7 @@ const Card: FC<CardProps> = ({
         >
             {image ? (
                 <img
-                    src={image}
+                    src={getImagePath(image, type)}
                     alt={title}
                     className="w-full h-48 object-cover rounded-t-2xl mb-5"
                 />
@@ -39,7 +45,7 @@ const Card: FC<CardProps> = ({
                         icon
                     ) : iconUrl ? (
                         <img
-                            src={iconUrl}
+                            src={getImagePath(iconUrl)}
                             alt={title}
                             className="w-12 h-12 mx-auto mb-2"
                         />
@@ -50,7 +56,7 @@ const Card: FC<CardProps> = ({
             )}
             <div className="px-6 pb-6">
                 <div className="text-sm text-primary mb-2 text-left">
-                    {date}
+                    {convertDate(date)}
                 </div>
                 <h3
                     className={`text-xl font-semibold mb-2 ${date ? 'text-left truncate' : 'text-red-500'}`}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useValidationToast } from '@/hooks/useValidationToast';
 import { useRegisterUser } from '@/hooks/useRegisterUser';
-import { checkEmailExists } from '@/services/loginService';
+//import { checkEmailExists } from '@/services/loginService';
 import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '@/firebase';
@@ -108,12 +108,12 @@ const Registracion = () => {
             return;
         }
 
-        const emailExists = await checkEmailExists(formData.email);
+        /*const emailExists = await checkEmailExists(formData.email);
         if (emailExists) {
             validateField(false, 'Ya existe una cuenta con ese email.');
             setIsLoading(false);
             return;
-        }
+        }*/
         try {
             const success = await register();
 

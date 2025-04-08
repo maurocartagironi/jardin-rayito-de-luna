@@ -1,19 +1,16 @@
-export const Contacto = () => {
-    const data = {
-        phoneNumber: '5491123456789',
-        message: 'Hola, me gustaría obtener más información sobre el jardín.',
-    };
+import { label } from '@/labels/labels';
+import { getImagePath } from '@/utils/images.utils';
 
-    const encodedMessage = encodeURIComponent(data.message);
-    const whatsappLink = `https://wa.me/${data.phoneNumber}?text=${encodedMessage}`;
+export const Contacto = () => {
+    const encodedMessage = encodeURIComponent(label.whatsAppMessage);
+    const whatsappLink = `https://wa.me/${label.phoneNumber}?text=${encodedMessage}`;
 
     return (
         <section className="bg-primary text-primary-foreground py-16 px-4 text-center">
-            <h2 className="text-3xl font-semibold mb-4">¿Querés saber más?</h2>
-            <p className="mb-6">
-                Escribinos por WhatsApp para agendar una entrevista
-                personalizada.
-            </p>
+            <h2 className="text-3xl font-semibold mb-4">
+                {label.wantToKnow.title}
+            </h2>
+            <p className="mb-6">{label.wantToKnow.message}</p>
             <a
                 href={whatsappLink}
                 target="_blank"
@@ -22,10 +19,10 @@ export const Contacto = () => {
             >
                 <img
                     className="w-10 h-10"
-                    src="https://www.svgrepo.com/show/452133/whatsapp.svg"
+                    src={getImagePath('whatsapp.svg')}
                     alt="WhatsApp"
                 />
-                Contactanos por WhatsApp
+                {label.wantToKnow.buttonMessage}
             </a>
         </section>
     );

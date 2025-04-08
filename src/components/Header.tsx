@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, LogIn, UserPlus } from 'lucide-react';
+import { Menu, X, LogIn, UserPlus, LogOut } from 'lucide-react';
 import { Button } from '@components/Button';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -34,6 +34,12 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
         auth.signOut();
     }
 
+    const handleLogout = async () => {
+        setIsMenuOpen(false);
+        await auth.signOut();
+        navigate('/login');
+    };
+
     return (
         <nav className="sticky top-0 bg-white shadow-sm z-50">
             <div className="max-w-6xl mx-auto px-3 md:px-4">
@@ -58,7 +64,7 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                         ))}
                     </div>
                     {hasConfigLogin && (
-                        <div className="hidden md:flex items-center space-x-4 text-sm">
+                        <div className="hidden md:flex items-center space-x-5 text-sm">
                             {user ? (
                                 <div
                                     className="flex items-center gap-2 cursor-pointer"
@@ -130,25 +136,26 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden px-2 pt-2 pb-3 space-y-1"
+                        className="md:hidden pt-2 space-y-1"
                     >
-                        {menuItems.map(({ id, label }) => (
-                            <Link
-                                key={id}
-                                to={getPath(id)}
-                                onClick={() => setIsMenuOpen(false)}
-                                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                    isActive(id)
-                                        ? 'bg-primary text-white'
-                                        : 'text-gray-600 hover:bg-muted'
-                                }`}
-                            >
-                                {label}
-                            </Link>
-                        ))}
-
-                        {hasConfigLogin && !user && (
-                            <div className="mt-4 flex flex-col gap-2">
+                        <div className="px-2">
+                            {menuItems.map(({ id, label }) => (
+                                <Link
+                                    key={id}
+                                    to={getPath(id)}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={`block px-3 py-2 rounded-md text-base font-medium ${
+                                        isActive(id)
+                                            ? 'bg-primary text-white'
+                                            : 'text-gray-600 hover:bg-muted'
+                                    }`}
+                                >
+                                    {label}
+                                </Link>
+                            ))}
+                        </div>
+                        {hasConfigLogin && !user ? (
+                            <div className="mt-4 flex gap-4 justify-around border-t pb-4 pt-4 bg-gray-50">
                                 <Link
                                     to="/login"
                                     onClick={() => setIsMenuOpen(false)}
@@ -165,6 +172,40 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                                     <UserPlus size={16} />
                                     Crear cuenta
                                 </Link>
+                            </div>
+                        ) : (
+                            <div className="flex justify-between bg-gray-50 px-2 py-4 items-center">
+                                <div
+                                    className="flex items-center gap-2 cursor-pointer px-3"
+                                    onClick={() => navigate('/dashboard')}
+                                >
+                                    <span className="text-gray-700 font-medium">
+                                        {user?.displayName || user?.email}
+                                    </span>
+                                    {user?.photoURL ? (
+                                        <img
+                                            src={user.photoURL}
+                                            alt="Avatar"
+                                            className="w-8 h-8 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs text-gray-600 font-bold">
+                                            {user?.displayName
+                                                ? user?.displayName[0].toUpperCase()
+                                                : user?.email?.[0].toUpperCase()}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="px-3">
+                                    <Link
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary"
+                                        to={''}
+                                    >
+                                        <LogOut className="w-4 h-4" />
+                                        Cerrar sesión
+                                    </Link>
+                                </div>
                             </div>
                         )}
                     </motion.div>

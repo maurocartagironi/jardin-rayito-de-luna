@@ -1,6 +1,12 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import {
+    fetchPlaceDetails,
+    RatingAndReview,
+} from '@/services/googleMapReviewAPI';
+import { useEffect, useState } from 'react';
+import { label } from '@/labels/labels';
 
 const testimonios = [
     {
@@ -26,6 +32,7 @@ const testimonios = [
 ];
 
 export const Testimonios = () => {
+    const [data, setData] = useState({} as RatingAndReview);
     const totalScore = testimonios.reduce((acc, curr) => acc + curr.score, 0);
     const averageScore = (totalScore / testimonios.length).toFixed(1);
 
@@ -40,11 +47,30 @@ export const Testimonios = () => {
         autoplaySpeed: 5000,
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const review: RatingAndReview = await fetchPlaceDetails();
+            setData(review);
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <section className="bg-gray-100 py-16 z-10">
+            {data.rating && data.rating > 0 && data.reviews.length > 0 && (
+                <div className="text-center mb-8">
+                    <p className="text-5xl font-bold text-yellow-500">
+                        {data.rating}
+                    </p>
+                    <p className="text-lg font-semibold">
+                        {data.reviews.length} reseñas
+                    </p>
+                </div>
+            )}
             <div className="max-w-4xl mx-auto px-4">
                 <h2 className="text-3xl font-semibold text-center mb-8">
-                    Lo que dicen las familias
+                    {label.testimonies.title}
                 </h2>
                 <div className="text-center mb-8">
                     <p className="text-5xl font-bold text-yellow-500">

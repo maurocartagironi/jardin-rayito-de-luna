@@ -108,6 +108,11 @@ input:-webkit-autofill {
 .grecaptcha-badge {
     top: 95px !important;
 }
+@media screen and (max-width: 720px) {
+    .grecaptcha-badge {
+        display: none !important;
+    }
+}
 
 /* Scroll personalizado solo en el modal */
 .modal-scroll::-webkit-scrollbar {

@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react';
-import {
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    signInWithPopup,
-    GoogleAuthProvider,
-    FacebookAuthProvider,
-    AuthError,
-    User,
-    EmailAuthProvider,
-    linkWithCredential,
-    fetchSignInMethodsForEmail,
-} from 'firebase/auth';
 import { auth, googleProvider } from '@/firebase';
+import {
+    AuthError,
+    EmailAuthProvider,
+    fetchSignInMethodsForEmail,
+    GoogleAuthProvider,
+    linkWithCredential,
+    sendPasswordResetEmail,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    User,
+} from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -64,57 +63,44 @@ const Login: React.FC = () => {
         }
     };
 
-    const handleLoginWithProvider = async (
-        provider: GoogleAuthProvider | FacebookAuthProvider
-    ) => {
+    const handleLoginWithProvider = async (provider: GoogleAuthProvider) => {
         try {
-            // 🔒 Autenticación con popup
+            const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            const email = user.email;
+            const googleUser = result.user;
 
-            if (!email) {
-                toast.error('No se pudo obtener el email del proveedor.');
-                return;
-            }
-
-            // 🔍 Verificar si ya hay métodos registrados para ese email
-            const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+            // Verificamos si ya existe ese email
+            const methods = await fetchSignInMethodsForEmail(
+                auth,
+                googleUser.email!
+            );
 
             if (
-                signInMethods.includes('password') &&
-                !user.providerData.some(
-                    (p) => p.providerId === provider.providerId
+                methods.includes('password') &&
+                !googleUser.providerData.some(
+                    (p) => p.providerId === 'password'
                 )
             ) {
-                // Si el usuario ya se registró con email/password, lo vinculamos
+                // Si hay método password pero no está vinculado todavía → vinculamos
                 const password = prompt(
-                    'Este email ya está registrado. Por favor, ingresá tu contraseña para vincular tu cuenta.'
+                    'Ya existe una cuenta con este email. Ingresá tu contraseña para vincular:'
                 );
-
-                if (!password) return;
-
-                const credential = EmailAuthProvider.credential(
-                    email,
-                    password
-                );
-
-                await linkWithCredential(user, credential);
-                toast.success('¡Cuenta vinculada correctamente!');
+                if (password) {
+                    const credential = EmailAuthProvider.credential(
+                        googleUser.email!,
+                        password
+                    );
+                    await linkWithCredential(googleUser, credential);
+                    toast.success(
+                        'Cuenta vinculada exitosamente con contraseña 🔒'
+                    );
+                }
             }
 
-            // Todo ok: logueado
             navigate('/dashboard');
-        } catch (error: unknown) {
-            const err = error as AuthError;
-            if (err.code === 'auth/account-exists-with-different-credential') {
-                toast.error(
-                    'Ya existe una cuenta con este email pero con otro método de autenticación.'
-                );
-            } else {
-                toast.error('Error al iniciar sesión con proveedor.');
-                console.error('Error con login popup:', err.message);
-            }
+        } catch (err: any) {
+            console.error('Error en login con Google:', err);
+            toast.error(err.message || 'Ocurrió un error al iniciar sesión');
         }
     };
 

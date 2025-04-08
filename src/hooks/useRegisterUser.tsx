@@ -1,4 +1,3 @@
-// useRegisterUser.ts
 import { registerNewUser } from '@/services/loginService';
 import { useState } from 'react';
 

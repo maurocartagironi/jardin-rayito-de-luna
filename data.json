@@ -1,18 +1,13 @@
 {
-    "users": {
-        "cartagironi.mauro@gmail.com": {
-            "firstname": "Mauro",
-            "lastname": "Cartagironi",
-            "email": "cartagironi.mauro@gmail.com",
-            "phone": "5491121668583",
-            "dni": "34213044",
-            "genre": "male",
-            "profile": "SUPERADMIN",
-            "uuid": "",
-            "createddate": "2025-04-03T18:00:00.000Z",
-            "modifieddate": "2025-04-03T18:00:00.000Z",
-            "createdby": "34213044",
-            "modifiedby": "34213044"
+    "gallery": {
+        "nSasYSYGkgB9GQ3s0SVh": {
+            "grade": null,
+            "isactive": true,
+            "ispublic": true,
+            "permission": null,
+            "title": null,
+            "description": null,
+            "image": "226a352c-69e2-4c7e-b31f-7a41eac51a08.png"
         }
     }
 }

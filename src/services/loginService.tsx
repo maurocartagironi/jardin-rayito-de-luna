@@ -20,37 +20,9 @@ import {
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
-interface UserData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    dni?: string;
-    gender?: string;
-    birthdate?: string;
-    notes?: string;
-    password: string;
-}
-
-export const userExists = async (email: string, dni: string | undefined) => {
-    const usersRef = collection(db, 'users');
-
-    const emailQuery = query(usersRef, where('email', '==', email));
-    const dniQuery = query(usersRef, where('dni', '==', dni));
-
-    const [emailSnap, dniSnap] = await Promise.all([
-        getDocs(emailQuery),
-        getDocs(dniQuery),
-    ]);
-
-    return {
-        emailExists: !emailSnap.empty,
-        dniExists: !dniSnap.empty,
-    };
-};
-
-export const registerNewUser = async (formData: UserData) => {
+export const registerNewUser = async (formData: UserData): Promise<boolean> => {
     try {
+        // Intenta crear cuenta con email/password
         const userCredential = await createUserWithEmailAndPassword(
             auth,
             formData.email,
@@ -60,10 +32,7 @@ export const registerNewUser = async (formData: UserData) => {
         const user = userCredential.user;
         await sendEmailVerification(user);
 
-        const uid = user.uid;
-
-        const userRef = doc(collection(db, 'users'), uid);
-
+        // Guardar datos en Firestore
         const payload = {
             firstname: formData.firstName,
             lastname: formData.lastName,
@@ -82,33 +51,31 @@ export const registerNewUser = async (formData: UserData) => {
             isvalidated: false,
         };
 
-        await setDoc(userRef, payload);
-    } catch (error: unknown) {
+        await setDoc(doc(db, 'users', user.uid), payload);
+
+        toast.success('Cuenta creada con éxito. Verificá tu email.');
+        return true;
+    } catch (error: any) {
         const err = error as AuthError;
 
-        // Paso 2: capturar si ya existe
         if (err.code === 'auth/email-already-in-use') {
             const methods = await fetchSignInMethodsForEmail(
                 auth,
                 formData.email
             );
 
-            // Paso 3: si ya existe con Google
             if (methods.includes('google.com')) {
                 toast.info(
-                    'Este correo ya está asociado a una cuenta de Google. Iniciá sesión con Google para vincularla.'
+                    'Este email ya está vinculado a una cuenta de Google. Iniciá sesión con Google para vincular.'
                 );
 
                 try {
-                    const googleProvider = new GoogleAuthProvider();
-                    const googleResult = await signInWithPopup(
-                        auth,
-                        googleProvider
-                    );
+                    const provider = new GoogleAuthProvider();
+                    const result = await signInWithPopup(auth, provider);
 
-                    const googleUser = googleResult.user;
+                    const googleUser = result.user;
 
-                    // Paso 4: vincular
+                    // Vincula el método email/password a esa cuenta
                     const credential = EmailAuthProvider.credential(
                         formData.email,
                         formData.password
@@ -123,12 +90,11 @@ export const registerNewUser = async (formData: UserData) => {
                     toast.error('No se pudo vincular la cuenta.');
                     return false;
                 }
-            } else {
-                toast.error(
-                    'Este email ya está en uso con otro método. Probá iniciar sesión.'
-                );
             }
+
+            toast.error('Este email ya está en uso. Probá iniciar sesión.');
         } else {
+            console.error('Error desconocido:', err);
             toast.error('Ocurrió un error al registrar la cuenta.');
         }
 
@@ -136,9 +102,56 @@ export const registerNewUser = async (formData: UserData) => {
     }
 };
 
-export const checkEmailExists = async (email: string) => {
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('email', '==', email));
-    const snapshot = await getDocs(q);
-    return !snapshot.empty;
+export const loginWithGoogleAndLinkIfNeeded = async () => {
+    try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+
+        const googleUser = result.user;
+
+        // 1. Buscar si ya hay un usuario en Firestore con ese email
+        const q = query(
+            collection(db, 'users'),
+            where('email', '==', googleUser.email)
+        );
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+            // 2. Ya existe un usuario con ese email
+            const firestoreUser = snapshot.docs[0];
+            const firestoreData = firestoreUser.data();
+
+            const email = googleUser.email!;
+            const methods = await fetchSignInMethodsForEmail(auth, email);
+
+            // 3. Si no está vinculado a email/password aún, le damos la opción
+            if (
+                methods.includes('google.com') &&
+                !methods.includes('password')
+            ) {
+                const password = prompt(
+                    'Ya existe una cuenta con este email. Ingresá tu contraseña para vincularlas:'
+                );
+
+                if (password) {
+                    const credential = EmailAuthProvider.credential(
+                        email,
+                        password
+                    );
+
+                    await linkWithCredential(googleUser, credential);
+                    toast.success('¡Cuenta vinculada con éxito!');
+                } else {
+                    toast.info('Vinculación cancelada');
+                }
+            }
+        }
+
+        return googleUser;
+    } catch (err) {
+        const error = err as AuthError;
+        console.error(error);
+        toast.error('No se pudo iniciar sesión con Google.');
+        return null;
+    }
 };

@@ -1,147 +1,137 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@components/Button';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const heroData = [
-    {
-        title: 'Donde cada día florece una nueva aventura',
-        description:
-            'Un espacio lleno de amor, juego y aprendizaje para que tu hijo crezca feliz.',
-        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b',
-        button: {
-            text: 'Conocenos',
-            position: 'center',
-            link: '/sobrenosotros',
-        },
-    },
-    {
-        title: 'Jugamos, exploramos y aprendemos juntos',
-        description:
-            'Actividades diseñadas para estimular la creatividad y el desarrollo emocional.',
-        image: 'https://images.unsplash.com/photo-1608633650126-999ff4c747e0',
-        button: null,
-    },
-    {
-        title: 'Tu hijo en las mejores manos',
-        description:
-            'Docentes comprometidas, espacios seguros y un entorno de contención y amor.',
-        image: 'https://images.unsplash.com/photo-1604881991720-f91add269bed',
-        button: {
-            text: 'Inscribite ahora',
-            position: 'bottom',
-            link: '/inscripcion',
-        },
-    },
-];
-
-const data = heroData;
+import Loading from '../Loading';
+import { useContent } from '@/context/ContentContext';
 
 export const Hero: React.FC = () => {
+    const { content, isLoading, hasError } = useContent();
+    const slides = content.filter((item) => item.type === 'header');
+
     const [index, setIndex] = useState(0);
-    const [prevIndex, setPrevIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
+    const [direction, setDirection] = useState(1);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
-    const slide = data[index];
+
+    const currentSlide = slides[index];
 
     const setNewIndex = (newIndex: number) => {
-        setPrevIndex(index);
-        setDirection(newIndex > index ? 1 : -1);
+        setDirection(1);
         setIndex(newIndex);
     };
 
     const startAutoplay = () => {
+        stopAutoplay();
         intervalRef.current = setInterval(() => {
-            setNewIndex((prevIndex + 1) % data.length);
+            setIndex((prev) => {
+                setDirection(1);
+                return (prev + 1) % slides.length;
+            });
         }, 5000);
     };
 
-    useEffect(() => {
-        startAutoplay();
-        return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        };
-    }, []);
-
-    const handleSwipe = (offsetX: number) => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-
-        if (offsetX > 50) {
-            setNewIndex(index === 0 ? data.length - 1 : index - 1);
-        } else if (offsetX < -50) {
-            setNewIndex((index + 1) % data.length);
+    const stopAutoplay = () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
         }
-
-        startAutoplay();
     };
+
+    useEffect(() => {
+        if (slides.length) startAutoplay();
+        return () => stopAutoplay();
+    }, [slides]);
+
+    if (isLoading) {
+        return (
+            <section className="h-[400px] md:min-h-[50vh] flex items-center justify-center bg-muted relative overflow-hidden">
+                <Loading size={10} color="white" />
+            </section>
+        );
+    }
 
     return (
         <section
             className="h-[400px] md:min-h-[50vh] flex items-center justify-center bg-muted relative overflow-hidden"
             style={{
-                backgroundImage: `url(${slide.image})`,
+                ...(currentSlide.image
+                    ? { backgroundImage: `url(${currentSlide.image})` }
+                    : {
+                          backgroundImage:
+                              'linear-gradient(to right top, rgb(170, 0, 255), rgb(0, 255, 123))',
+                      }),
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
             }}
         >
             <div className="absolute inset-0 bg-black/40" />
-            <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                    key={slide.title}
-                    custom={direction}
-                    initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
-                    transition={{ duration: 0.5 }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    onDragEnd={(e, info) => handleSwipe(info.offset.x)}
-                    className="relative z-10 text-center text-white px-6 pt-24 max-w-2xl pb-20"
-                >
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 rainbow-text">
-                        {slide.title}
-                    </h1>
-                    <p className="text-lg mb-6">{slide.description}</p>
-                    {slide.button && (
-                        <div
-                            className={`mt-4 ${
-                                slide.button.position === 'bottom'
-                                    ? 'mt-10'
-                                    : ''
-                            }`}
+            {!hasError && (
+                <>
+                    <AnimatePresence mode="wait" custom={direction}>
+                        <motion.div
+                            key={currentSlide.title}
+                            custom={direction}
+                            initial={{
+                                opacity: 0,
+                                x: direction > 0 ? 100 : -100,
+                            }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{
+                                opacity: 0,
+                                x: direction > 0 ? -100 : 100,
+                            }}
+                            transition={{ duration: 0.5 }}
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            className="relative z-10 text-center text-white px-6 pt-24 max-w-2xl pb-20"
                         >
-                            <Button
-                                variant="third"
-                                className="text-lg px-6 py-3 rounded-xl"
-                                asChild
-                            >
-                                <a href={slide.button.link}>
-                                    {slide.button.text}
-                                </a>
-                            </Button>
-                        </div>
-                    )}
-                </motion.div>
-            </AnimatePresence>
+                            <h1 className="text-4xl md:text-5xl font-bold mb-4 rainbow-text">
+                                {currentSlide.title}
+                            </h1>
+                            <p className="text-lg mb-6">
+                                {currentSlide.description}
+                            </p>
+                            {currentSlide.button && (
+                                <div
+                                    className={`mt-4 ${
+                                        currentSlide.button.position ===
+                                        'bottom'
+                                            ? 'mt-10'
+                                            : ''
+                                    }`}
+                                >
+                                    <Button
+                                        variant="default"
+                                        className="text-lg px-6 py-3 rounded-xl"
+                                        asChild
+                                    >
+                                        <a href={currentSlide.button.link}>
+                                            {currentSlide.button.label}
+                                        </a>
+                                    </Button>
+                                </div>
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
 
-            {/* Dots de navegación */}
-            <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-                {data.map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => {
-                            if (intervalRef.current)
-                                clearInterval(intervalRef.current);
-                            setNewIndex(i);
-                            startAutoplay();
-                        }}
-                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                            i === index
-                                ? 'bg-white'
-                                : 'bg-white/50 hover:bg-white'
-                        }`}
-                    />
-                ))}
-            </div>
+                    <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                        {slides.map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => {
+                                    stopAutoplay();
+                                    setNewIndex(i);
+                                    startAutoplay();
+                                }}
+                                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                                    i === index
+                                        ? 'bg-white'
+                                        : 'bg-white/50 hover:bg-white'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
         </section>
     );
 };
