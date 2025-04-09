@@ -1,13 +1,12 @@
 {
-    "gallery": {
-        "nSasYSYGkgB9GQ3s0SVh": {
-            "grade": null,
-            "isactive": true,
-            "ispublic": true,
-            "permission": null,
-            "title": null,
-            "description": null,
-            "image": "226a352c-69e2-4c7e-b31f-7a41eac51a08.png"
+    "content": {
+        "tjDkWdtnWwpNp5toYff3": {
+            "type": "socialmedias",
+            "title": "Instagram",
+            "button": {
+                "label": "Ir a Instagram",
+                "link": "https://www.instagram.com/"
+            }
         }
     }
 }

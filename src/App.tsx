@@ -16,57 +16,68 @@ import ProtectedRoute from '@utils/ProtectedRoute';
 import Registracion from '@pages/Registracion';
 import { ContentProvider } from '@/context/ContentContext';
 import { GalleryProvider } from '@/context/GalleryContext';
+import { RouterProvider } from '@/context/RouterContext';
+import NotFound from '@pages/NotFound';
 
 const App: React.FC = () => {
     const hasConfigLogin = import.meta.env.VITE_ENABLE_LOGIN_USER === 'true';
 
     return (
-        <ContentProvider>
-            <GalleryProvider>
-                <Router>
-                    <Routes>
-                        <Route element={<Layout />}>
-                            <Route path="/" element={<Homepage />} />
-                            <Route
-                                path="/actividades"
-                                element={<Actividades />}
-                            />
-                            <Route
-                                path="/instalaciones"
-                                element={<Instalaciones />}
-                            />
-                            <Route path="/galeria" element={<Galeria />} />
-                            <Route
-                                path="/sobrenosotros"
-                                element={<SobreNosotros />}
-                            />
-                            <Route
-                                path="/inscripcion"
-                                element={<Inscripcion />}
-                            />
-                            <Route path="/noticias" element={<Noticias />} />
-                            {hasConfigLogin && (
-                                <>
-                                    <Route
-                                        path="/register"
-                                        element={<Registracion />}
-                                    />
-                                    <Route path="/login" element={<Login />} />
-                                    <Route
-                                        path="/dashboard"
-                                        element={
-                                            <ProtectedRoute>
-                                                <Dashboard />
-                                            </ProtectedRoute>
-                                        }
-                                    />
-                                </>
-                            )}
-                        </Route>
-                    </Routes>
-                </Router>
-            </GalleryProvider>
-        </ContentProvider>
+        <RouterProvider>
+            <ContentProvider>
+                <GalleryProvider>
+                    <Router>
+                        <Routes>
+                            <Route element={<Layout />}>
+                                <Route path="/" element={<Homepage />} />
+                                <Route
+                                    path="/actividades"
+                                    element={<Actividades />}
+                                />
+                                <Route
+                                    path="/instalaciones"
+                                    element={<Instalaciones />}
+                                />
+                                <Route path="/galeria" element={<Galeria />} />
+                                <Route
+                                    path="/sobrenosotros"
+                                    element={<SobreNosotros />}
+                                />
+                                <Route
+                                    path="/inscripcion"
+                                    element={<Inscripcion />}
+                                />
+                                <Route
+                                    path="/noticias"
+                                    element={<Noticias />}
+                                />
+                                {hasConfigLogin && (
+                                    <>
+                                        <Route
+                                            path="/register"
+                                            element={<Registracion />}
+                                        />
+                                        <Route
+                                            path="/login"
+                                            element={<Login />}
+                                        />
+                                        <Route
+                                            path="/dashboard"
+                                            element={
+                                                <ProtectedRoute>
+                                                    <Dashboard />
+                                                </ProtectedRoute>
+                                            }
+                                        />
+                                    </>
+                                )}
+                                <Route path="*" element={<NotFound />} />
+                            </Route>
+                        </Routes>
+                    </Router>
+                </GalleryProvider>
+            </ContentProvider>
+        </RouterProvider>
     );
 };
 

@@ -3,24 +3,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { LogOut } from 'lucide-react';
 import { auth } from '@/firebase';
-
-const socialLinks = [
-    {
-        href: 'https://facebook.com',
-        alt: 'Facebook',
-        src: 'https://www.svgrepo.com/show/500854/facebook.svg',
-    },
-    {
-        href: 'https://instagram.com',
-        alt: 'Instagram',
-        src: 'https://www.svgrepo.com/show/506668/instagram.svg',
-    },
-    {
-        href: 'https://tiktok.com',
-        alt: 'TikTok',
-        src: 'https://www.svgrepo.com/show/473806/tiktok.svg',
-    },
-];
+import { useContent } from '@/context/ContentContext';
+import { getImagePath } from '@/utils/images.utils';
+import { useRouter } from '@/context/RouterContext';
 
 const menuItems = [
     { id: 'home', label: 'Inicio' },
@@ -31,6 +16,10 @@ const menuItems = [
 ];
 
 const Topbar: FC = () => {
+    const { content } = useContent();
+    const { routers } = useRouter();
+    const menuLogin = routers.filter((item) => item.url === '/login')[0];
+    const menuRegister = routers.filter((item) => item.url === '/register')[0];
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,6 +27,8 @@ const Topbar: FC = () => {
     const getPath = (id: string) => (id === 'home' ? '/' : `/${id}`);
 
     const hasConfigLogin = import.meta.env.VITE_ENABLE_LOGIN_USER === 'true';
+    const socialmedias = content.filter((item) => item.type === 'socialmedias');
+    const menues = routers.filter((item) => item.showbar);
 
     if (!hasConfigLogin && user) {
         auth.signOut();
@@ -45,7 +36,7 @@ const Topbar: FC = () => {
 
     const handleLogout = async () => {
         await auth.signOut();
-        navigate('/login');
+        navigate(menuLogin.url);
     };
 
     return (
@@ -53,16 +44,18 @@ const Topbar: FC = () => {
             <div className="max-w-6xl mx-auto px-4 py-2 flex justify-between items-center text-sm text-muted-foreground font-[SalesforceSans]">
                 {/* Redes sociales */}
                 <div className="flex gap-3 items-center">
-                    {socialLinks.map(({ href, alt, src }) => (
+                    {socialmedias.map((item) => (
                         <a
-                            key={alt}
-                            href={href}
+                            key={item.title}
+                            href={item.button?.link}
                             target="_blank"
                             rel="noreferrer"
                         >
                             <img
-                                src={src}
-                                alt={alt}
+                                src={getImagePath(
+                                    item.image.replace('.svg', 'top.svg')
+                                )}
+                                alt={item.title}
                                 className="w-4 h-4 hover:opacity-80"
                             />
                         </a>
@@ -71,21 +64,20 @@ const Topbar: FC = () => {
 
                 {/* Menú desktop */}
                 <div className="hidden md:flex items-center space-x-8">
-                    {menuItems.map(({ id, label }) => {
-                        const path = getPath(id);
-                        const isActive = location.pathname === path;
+                    {menues.map((menu: Router) => {
+                        const isActive = location.pathname === menu.url;
 
                         return (
                             <Link
-                                key={id}
-                                to={path}
+                                key={menu.index}
+                                to={menu.url}
                                 className={`text-sm ${
                                     isActive
                                         ? 'text-primary font-semibold'
                                         : 'text-gray-600 hover:text-primary'
                                 }`}
                             >
-                                {label}
+                                {menu.name}
                             </Link>
                         );
                     })}
@@ -127,16 +119,16 @@ const Topbar: FC = () => {
                         ) : (
                             <div className="flex gap-4">
                                 <button
-                                    onClick={() => navigate('/login')}
+                                    onClick={() => navigate(menuLogin?.url)}
                                     className="text-primary underline hover:opacity-80"
                                 >
-                                    Iniciar sesión
+                                    {menuLogin?.name}
                                 </button>
                                 <button
-                                    onClick={() => navigate('/register')}
+                                    onClick={() => navigate(menuRegister?.url)}
                                     className="text-primary underline hover:opacity-80"
                                 >
-                                    Crear cuenta
+                                    {menuRegister?.name}
                                 </button>
                             </div>
                         )}

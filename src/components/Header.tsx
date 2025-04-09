@@ -7,14 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import logo from '@assets/img/LogoBW.png';
 import { auth } from '@/firebase';
 import { useNavigate } from 'react-router-dom';
-
-const menuItems = [
-    { id: 'home', label: 'Inicio' },
-    { id: 'sobrenosotros', label: 'Quienes somos' },
-    { id: 'instalaciones', label: 'Instalaciones' },
-    { id: 'inscripcion', label: 'Inscripción' },
-    { id: 'galeria', label: 'Galería' },
-];
+import { useRouter } from '@/context/RouterContext';
 
 interface HeaderProps {
     isMenuOpen: boolean;
@@ -22,6 +15,14 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
+    const { routers } = useRouter();
+    const menues = routers.filter((item) => item.showbar);
+    const menuLogin: Router = routers.filter(
+        (item) => item.url === '/login'
+    )[0];
+    const menuRegister: Router = routers.filter(
+        (item) => item.url === '/register'
+    )[0];
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
@@ -37,7 +38,7 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
     const handleLogout = async () => {
         setIsMenuOpen(false);
         await auth.signOut();
-        navigate('/login');
+        navigate(menuLogin.url);
     };
 
     return (
@@ -49,17 +50,17 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                         <img src={logo} alt="Logo" className="h-12 py-1" />
                     </Link>
                     <div className="flex items-center space-x-8">
-                        {menuItems.map(({ id, label }) => (
+                        {menues.map((menu: Router) => (
                             <Link
-                                key={id}
-                                to={getPath(id)}
+                                key={menu.index}
+                                to={menu.url}
                                 className={`nav-link text-sm ${
-                                    isActive(id)
+                                    isActive(menu.url)
                                         ? 'text-primary font-semibold'
                                         : 'text-gray-600 hover:text-primary'
                                 }`}
                             >
-                                {label}
+                                {menu.name}
                             </Link>
                         ))}
                     </div>
@@ -90,18 +91,18 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                             ) : (
                                 <>
                                     <Link
-                                        to="/login"
+                                        to={menuLogin?.url}
                                         className="flex items-center gap-1 text-gray-500 hover:text-primary transition"
                                     >
                                         <LogIn size={16} />
-                                        <span>Iniciar sesión</span>
+                                        <span>{menuLogin?.name}</span>
                                     </Link>
                                     <Link
-                                        to="/register"
+                                        to={menuRegister?.url}
                                         className="flex items-center gap-1 text-gray-500 hover:text-primary transition"
                                     >
                                         <UserPlus size={16} />
-                                        <span>Crear cuenta</span>
+                                        <span>{menuRegister?.name}</span>
                                     </Link>
                                 </>
                             )}
@@ -139,38 +140,38 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                         className="md:hidden pt-2 space-y-1"
                     >
                         <div className="px-2">
-                            {menuItems.map(({ id, label }) => (
+                            {menues.map((menu: Router) => (
                                 <Link
-                                    key={id}
-                                    to={getPath(id)}
+                                    key={menu.index}
+                                    to={menu.url}
                                     onClick={() => setIsMenuOpen(false)}
                                     className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                        isActive(id)
+                                        isActive(menu.url)
                                             ? 'bg-primary text-white'
                                             : 'text-gray-600 hover:bg-muted'
                                     }`}
                                 >
-                                    {label}
+                                    {menu.name}
                                 </Link>
                             ))}
                         </div>
                         {hasConfigLogin && !user ? (
                             <div className="mt-4 flex gap-4 justify-around border-t pb-4 pt-4 bg-gray-50">
                                 <Link
-                                    to="/login"
+                                    to={menuLogin.url}
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary"
                                 >
                                     <LogIn size={16} />
-                                    Iniciar sesión
+                                    {menuLogin.name}
                                 </Link>
                                 <Link
-                                    to="/register"
+                                    to={menuRegister.url}
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary"
                                 >
                                     <UserPlus size={16} />
-                                    Crear cuenta
+                                    {menuRegister.name}
                                 </Link>
                             </div>
                         ) : (

@@ -1,88 +1,63 @@
+import { useContent } from '@/context/ContentContext';
+import { useRouter } from '@/context/RouterContext';
+import { label } from '@/labels/labels';
+import { getImagePath } from '@/utils/images.utils';
+import { Mail, MapPin, Phone, Linkedin, Coffee } from 'lucide-react';
 import { FC } from 'react';
-import {
-    Facebook,
-    Instagram,
-    Triangle,
-    Mail,
-    Phone,
-    MapPin,
-} from 'lucide-react';
 
 const Footer: FC = () => {
+    const { routers } = useRouter();
+    const { content } = useContent();
+    const data = routers.filter((route: Router) => route.showbar);
+    const socialmedias = content.filter((item) => item.type === 'socialmedias');
+
     return (
-        <footer className="bg-primary/10 text-gray-700 pt-10 pb-6">
+        <footer className="bg-primary/10 text-gray-700 pt-10">
             <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                 {/* Logo y nombre */}
                 <div>
                     <h2 className="text-2xl font-bold text-red-500 mb-2">
-                        Mi rayito de Luna
+                        {label.name}
                     </h2>
-                    <p className="text-sm text-gray-600">
-                        Un espacio donde los niños crecen jugando, creando y
-                        descubriendo.
-                    </p>
+                    <p className="text-sm text-gray-600">{label.tagline}</p>
                 </div>
 
                 {/* Navegación */}
                 <div>
                     <h3 className="text-lg font-semibold mb-3 text-red-500">
-                        Secciones
+                        {label.menufooter.sections}
                     </h3>
                     <ul className="space-y-2 text-sm">
-                        <li>
-                            <a href="#home" className="hover:text-red-400">
-                                Inicio
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="/sobrenosotros"
-                                className="hover:text-red-400"
-                            >
-                                Quienes somos
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="/instalaciones"
-                                className="hover:text-red-400"
-                            >
-                                Instalaciones
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="/inscripcion"
-                                className="hover:text-red-400"
-                            >
-                                Inscripción
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/galeria" className="hover:text-red-400">
-                                Galería
-                            </a>
-                        </li>
+                        {data.map((route: Router, index: number) => (
+                            <li key={index}>
+                                <a
+                                    href={route.url}
+                                    className="hover:text-red-400"
+                                >
+                                    {route.name}
+                                </a>
+                            </li>
+                        ))}
                     </ul>
                 </div>
 
                 {/* Contacto */}
                 <div>
                     <h3 className="text-lg font-semibold mb-3 text-red-500">
-                        Contacto
+                        {label.menufooter.contact}
                     </h3>
                     <ul className="space-y-2 text-sm">
                         <li className="flex items-center gap-2">
-                            <Phone className="h-4 w-4 text-red-400" /> +54 9 11
-                            2345-6789
+                            <Phone className="h-4 w-4 text-red-400" />
+                            {label.phoneNumberFormatted}
                         </li>
                         <li className="flex items-center gap-2">
                             <Mail className="h-4 w-4 text-red-400" />{' '}
-                            contacto@mirayitodeluna.com
+                            {label.email}
                         </li>
                         <li className="flex items-center gap-2">
                             <MapPin className="h-4 w-4 text-red-400" /> Av.
-                            Principal 123, Buenos Aires
+                            {label.address}
                         </li>
                     </ul>
                 </div>
@@ -90,37 +65,44 @@ const Footer: FC = () => {
                 {/* Redes sociales */}
                 <div>
                     <h3 className="text-lg font-semibold mb-3 text-red-500">
-                        Redes Sociales
+                        {label.menufooter.socialmedias}
                     </h3>
                     <div className="flex gap-4">
-                        <a
-                            href="https://facebook.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Facebook className="h-5 w-5 hover:text-red-400" />
-                        </a>
-                        <a
-                            href="https://instagram.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Instagram className="h-5 w-5 hover:text-red-400" />
-                        </a>
-                        <a
-                            href="https://tiktok.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Triangle className="h-5 w-5 hover:text-red-400" />
-                        </a>
+                        {socialmedias.map((item) => (
+                            <a
+                                href={item.button?.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img
+                                    src={getImagePath(item.image)}
+                                    className="cursor-pointer h-5 w-5 hover:opacity-80"
+                                />
+                            </a>
+                        ))}
                     </div>
                 </div>
             </div>
 
-            <div className="border-t border-gray-200 mt-8 pt-4 text-center text-sm text-gray-500">
-                © {new Date().getFullYear()} Mi rayito de Luna. Todos los
-                derechos reservados.
+            <div className="border-t border-gray-200 mt-8 py-4 text-center text-sm text-gray-500 px-4">
+                © {new Date().getFullYear()} {label.copyright}
+            </div>
+            <div className="justify-end flex bg-gray-200/90 text-gray-400 text-[10px] text-right align-right py-2 px-2 items-center justify-right">
+                <p className=" mr-1">Desarrollado con ❤ © 2025</p>
+                <a
+                    href="https://www.linkedin.com/in/maurocartagironi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-primary"
+                >
+                    <Linkedin className="h-3" />
+                </a>
+                <a
+                    href="https://buymeacoffee.com/mauropitu"
+                    className="hover:text-primary"
+                >
+                    <Coffee className="h-3" />
+                </a>
             </div>
         </footer>
     );

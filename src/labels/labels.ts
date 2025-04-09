@@ -1,4 +1,16 @@
 export const label = {
+    name: 'Mi rayito del Luna',
+    tagline:
+        'Un espacio donde los niños crecen jugando, creando y descubriendo',
+    menufooter: {
+        sections: 'Secciones',
+        contact: 'Contacto',
+        socialmedias: 'Redes sociales',
+    },
+    phoneNumberFormatted: '+54 9 11 2345-6789',
+    email: 'contacto@mirayitodeluna.com',
+    address: 'Av. Principal 123, Buenos Aires',
+    copyright: 'Mi rayito de Luna - Todos los derechos reservados.',
     phoneNumber: '5491123456789',
     whatsAppMessage:
         'Hola, me gustaría obtener más información sobre el jardín.',
@@ -28,4 +40,6 @@ export const label = {
             title: 'Últimas noticias',
         },
     },
+    floatButton: 'Escribinos',
+    creatorimage: 'PiTu.jpeg',
 };
