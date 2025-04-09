@@ -4,7 +4,7 @@ import { Menu, X, LogIn, UserPlus, LogOut } from 'lucide-react';
 import { Button } from '@components/Button';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import logo from '@assets/img/LogoBW.png';
+import logo from '@assets/img/LogoHeader.png';
 import { auth } from '@/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useRouter } from '@/context/RouterContext';
@@ -47,7 +47,7 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                 {/* Desktop */}
                 <div className="hidden md:flex justify-between items-center h-16">
                     <Link to="/" className="flex items-center">
-                        <img src={logo} alt="Logo" className="h-12 py-1" />
+                        <img src={logo} alt="Logo" className="h-[60px] py-1" />
                     </Link>
                     <div className="flex items-center space-x-8">
                         {menues.map((menu: Router) => (
@@ -112,7 +112,7 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                 {/* Mobile */}
                 <div className="md:hidden flex justify-between items-center h-14">
                     <Link to="/" className="flex items-center">
-                        <img src={logo} alt="Logo" className="h-8 py-1" />
+                        <img src={logo} alt="Logo" className="h-[55px] py-1" />
                     </Link>
                     <div className="md:hidden">
                         <Button
