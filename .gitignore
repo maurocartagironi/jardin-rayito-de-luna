@@ -1,3 +1,21 @@
-/node_modules
-/dist
-/.firebase
+# Node
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# dotenv
+.env
+.env.local
+.env.*.local
+
+# Firebase emulators
+firebase-debug.log
+.firebaserc
+
+# Editor configs
+.vscode/
+.idea/
+.DS_Store

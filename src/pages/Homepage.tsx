@@ -16,7 +16,7 @@ export default function Home() {
             <Actividades />
             <Galeria />
             <Noticias />
-            <Testimonios />
+            {/*<Testimonios />*/}
             <Contacto />
         </div>
     );
