@@ -1,4 +1,4 @@
-const GOOGLE_API_KEY = 'AIzaSyCYC_tBUDxy9GvzMBqRBVeAerX_wR6wkcs';
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 type Review = {
     author_name: string;
