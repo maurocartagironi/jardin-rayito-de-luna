@@ -4,6 +4,8 @@ import { label } from '@/labels/labels';
 import { getImagePath } from '@/utils/images.utils';
 import { Mail, MapPin, Phone, Linkedin, Coffee } from 'lucide-react';
 import { FC } from 'react';
+import Loading from './Loading';
+import { formatPhoneNumber } from '@/utils/utils';
 
 const Footer: FC = () => {
     const { routers } = useRouter();
@@ -27,18 +29,24 @@ const Footer: FC = () => {
                     <h3 className="text-lg font-semibold mb-3 text-red-500">
                         {label.menufooter.sections}
                     </h3>
-                    <ul className="space-y-2 text-sm">
-                        {data.map((route: Router, index: number) => (
-                            <li key={index}>
-                                <a
-                                    href={route.url}
-                                    className="hover:text-red-400"
-                                >
-                                    {route.name}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
+                    {data && data.length > 0 ? (
+                        <ul className="space-y-2 text-sm">
+                            {data.map((route: Router, index: number) => (
+                                <li key={index}>
+                                    <a
+                                        href={route.url}
+                                        className="hover:text-red-400"
+                                    >
+                                        {route.name}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div className="flex justify-left">
+                            <Loading size={5} borderSize={2} />
+                        </div>
+                    )}
                 </div>
 
                 {/* Contacto */}
@@ -47,17 +55,23 @@ const Footer: FC = () => {
                         {label.menufooter.contact}
                     </h3>
                     <ul className="space-y-2 text-sm">
-                        <li className="flex items-center gap-2">
+                        <li className="flex items-start gap-2">
                             <Phone className="h-4 w-4 text-red-400" />
-                            {label.phoneNumberFormatted}
+                            <a
+                                href={`tel:${formatPhoneNumber(label.company.phoneNumber)}`}
+                            >
+                                {formatPhoneNumber(label.company.phoneNumber)}
+                            </a>
                         </li>
-                        <li className="flex items-center gap-2">
-                            <Mail className="h-4 w-4 text-red-400" />{' '}
-                            {label.email}
+                        <li className="flex items-start gap-2">
+                            <Mail className="h-4 w-4 text-red-400" />
+                            <a href={`mailto:${label.company.email}`}>
+                                {label.company.email}
+                            </a>
                         </li>
-                        <li className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4 text-red-400" /> Av.
-                            {label.address}
+                        <li className="flex items-start gap-2">
+                            <MapPin className="h-4 w-4 text-red-400" />
+                            {label.company.address}
                         </li>
                     </ul>
                 </div>
@@ -67,20 +81,26 @@ const Footer: FC = () => {
                     <h3 className="text-lg font-semibold mb-3 text-red-500">
                         {label.menufooter.socialmedias}
                     </h3>
-                    <div className="flex gap-4">
-                        {socialmedias.map((item) => (
-                            <a
-                                href={item.button?.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <img
-                                    src={getImagePath(item.image)}
-                                    className="cursor-pointer h-5 w-5 hover:opacity-80"
-                                />
-                            </a>
-                        ))}
-                    </div>
+                    {socialmedias && socialmedias.length > 0 ? (
+                        <div className="flex gap-4">
+                            {socialmedias.map((item) => (
+                                <a
+                                    href={item.button?.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <img
+                                        src={getImagePath(item.image)}
+                                        className="cursor-pointer h-5 w-5 hover:opacity-80"
+                                    />
+                                </a>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex justify-left">
+                            <Loading size={5} borderSize={2} />
+                        </div>
+                    )}
                 </div>
             </div>
 

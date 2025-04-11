@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Layout from '@/layout/Layout';
+import { ContentProvider } from '@/context/ContentContext';
+import { GalleryProvider } from '@/context/GalleryContext';
+import { RouterProvider } from '@/context/RouterContext';
 
+import Layout from '@/layout/Layout';
 import Homepage from '@/pages/Homepage';
 import Actividades from '@/pages/Actividades';
 import Instalaciones from '@/pages/Instalaciones';
@@ -10,18 +13,9 @@ import Galeria from '@/pages/Galeria';
 import SobreNosotros from '@/pages/SobreNosotros';
 import Inscripcion from '@/pages/Inscripcion';
 import Noticias from '@/components/home/Noticias';
-import Login from '@pages/Login';
-import Dashboard from '@pages/auth/Dashboard';
-import ProtectedRoute from '@utils/ProtectedRoute';
-import Registracion from '@pages/Registracion';
-import { ContentProvider } from '@/context/ContentContext';
-import { GalleryProvider } from '@/context/GalleryContext';
-import { RouterProvider } from '@/context/RouterContext';
 import NotFound from '@pages/NotFound';
 
 const App: React.FC = () => {
-    const hasConfigLogin = import.meta.env.VITE_ENABLE_LOGIN_USER === 'true';
-
     return (
         <RouterProvider>
             <ContentProvider>
@@ -51,26 +45,6 @@ const App: React.FC = () => {
                                     path="/noticias"
                                     element={<Noticias />}
                                 />
-                                {hasConfigLogin && (
-                                    <>
-                                        <Route
-                                            path="/register"
-                                            element={<Registracion />}
-                                        />
-                                        <Route
-                                            path="/login"
-                                            element={<Login />}
-                                        />
-                                        <Route
-                                            path="/dashboard"
-                                            element={
-                                                <ProtectedRoute>
-                                                    <Dashboard />
-                                                </ProtectedRoute>
-                                            }
-                                        />
-                                    </>
-                                )}
                                 <Route path="*" element={<NotFound />} />
                             </Route>
                         </Routes>

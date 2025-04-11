@@ -30,5 +30,5 @@ export const getImagePath = (filename: string, folder?: string) => {
     ).find(([key]) =>
         key.endsWith(folder ? `/${folder}/${filename}` : `/icon/${filename}`)
     );
-    return match?.[1] || '';
+    return match?.[1] || filename;
 };

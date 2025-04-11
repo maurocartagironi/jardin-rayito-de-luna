@@ -19,3 +19,14 @@ export const convertDate = (date: Timestamp | undefined) => {
 
     return capitalizedDate;
 };
+
+export function formatPhoneNumber(number: string) {
+    if (!number) return '';
+
+    const regex = /^(\d{2})(\d)(\d{2})(\d{4})(\d{4})$/;
+    const match = number.match(regex);
+
+    if (!match) return number;
+
+    return `+${match[1]} ${match[2]} ${match[3]} ${match[4]}-${match[5]}`;
+}

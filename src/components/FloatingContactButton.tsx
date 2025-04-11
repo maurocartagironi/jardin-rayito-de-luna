@@ -2,11 +2,9 @@ import { label } from '@/labels/labels';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const FloatingContactButton = () => {
-    const whatsappNumber = '5491123456789';
-    const message = encodeURIComponent(
-        '¡Hola! Me gustaría recibir más información sobre el jardín.'
-    );
-    const link = `https://wa.me/${whatsappNumber}?text=${message}`;
+    const whatsAppNumber = label.company.phoneNumber;
+    const message = encodeURIComponent(label.whatsAppMessage);
+    const link = `https://wa.me/${whatsAppNumber}?text=${message}`;
 
     return (
         <a

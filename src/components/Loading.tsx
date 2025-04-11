@@ -3,9 +3,16 @@ interface LoadingProps {
     label?: string | null;
     size?: number;
     color?: string | null;
+    borderSize?: number | null;
 }
 
-export default function Loading({ isDot, label, size, color }: LoadingProps) {
+export default function Loading({
+    isDot,
+    label,
+    size,
+    color,
+    borderSize,
+}: LoadingProps) {
     return (
         <>
             {isDot ? (
@@ -25,7 +32,7 @@ export default function Loading({ isDot, label, size, color }: LoadingProps) {
             ) : (
                 <div className="flex flex-col items-center gap-4">
                     <div
-                        className={`${size ? 'w-' + size + ' h-' + size : 'w-10 h-10'} border-8 border-t-transparent border-primary rounded-full animate-spin`}
+                        className={`${size ? 'w-' + size + ' h-' + size : 'w-10 h-10'} ${borderSize ? 'border-' + borderSize : 'border-8'} border-t-transparent border-primary rounded-full animate-spin`}
                     ></div>
                     {label && (
                         <p
