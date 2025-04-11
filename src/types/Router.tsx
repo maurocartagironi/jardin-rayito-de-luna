@@ -5,4 +5,5 @@ interface Router {
     isactive: boolean;
     index: number;
     component: string;
+    id: string;
 }

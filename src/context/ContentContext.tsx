@@ -29,8 +29,10 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
                 const snapshot = await getDocs(collection(db, 'content'));
                 const data = snapshot.docs.map((doc) => ({
                     ...doc.data(),
+                    id: doc.id,
                     index: doc.data().index ?? 0,
                 })) as Content[];
+
                 setContent(data.sort((a, b) => a.index - b.index));
             } catch (err) {
                 console.error(err);

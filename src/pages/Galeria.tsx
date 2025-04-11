@@ -38,7 +38,7 @@ const Galeria = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {publicImages.map((item) => (
                                 <div
-                                    key={item.image}
+                                    key={item.id}
                                     onClick={() => setSelectedImage(item)}
                                     className="cursor-pointer rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
                                 >

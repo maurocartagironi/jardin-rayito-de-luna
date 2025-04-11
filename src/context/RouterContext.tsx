@@ -31,11 +31,15 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({
                     where('isactive', '==', true)
                 );
                 const snapshot = await getDocs(q);
-                const data = snapshot.docs.map((doc) => ({
+
+                const data: Router[] = snapshot.docs.map((doc) => ({
                     ...doc.data(),
-                    index: doc.data().index ?? 0,
+                    id: doc.id,
                 })) as Router[];
-                setRouters(data.sort((a, b) => a.index - b.index));
+
+                data.sort((a, b) => a.index - b.index);
+
+                setRouters(data);
             } catch (err) {
                 console.error(err);
                 setHasError(true);

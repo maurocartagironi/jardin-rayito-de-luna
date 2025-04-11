@@ -16,9 +16,9 @@ export const Pilares: React.FC = () => {
                         </h2>
                         {info && !isLoading ? (
                             <div className="grid md:grid-cols-3 gap-6">
-                                {info.map((item, index) => (
+                                {info.map((item) => (
                                     <div
-                                        key={index}
+                                        key={item.id}
                                         className="p-6 bg-white rounded-2xl shadow flex items-center gap-4"
                                     >
                                         <div className="text-2xl">

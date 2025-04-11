@@ -8,4 +8,5 @@ interface Gallery {
     ispublic: boolean;
     permission: string;
     grade: string;
+    id: string;
 }

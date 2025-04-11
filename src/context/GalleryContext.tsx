@@ -34,8 +34,10 @@ export const GalleryProvider: React.FC<{ children: React.ReactNode }> = ({
                 const snapshot = await getDocs(q);
                 const data = snapshot.docs.map((doc) => ({
                     ...doc.data(),
+                    id: doc.id,
                     index: doc.data().index ?? 0,
                 })) as Gallery[];
+
                 setGallery(data.sort((a, b) => a.index - b.index));
             } catch (err) {
                 console.error(err);

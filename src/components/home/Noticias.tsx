@@ -1,11 +1,11 @@
 import Card from '@/components/Card';
 import { db } from '@/firebase';
+import { label } from '@/labels/labels';
 import { News } from '@/types/News';
+import { getImagePath } from '@/utils/images.utils';
 import { convertDate } from '@/utils/utils';
 import {
     collection,
-    DocumentReference,
-    getDoc,
     getDocs,
     limit,
     orderBy,
@@ -15,8 +15,6 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Loading from '../Loading';
-import { getImagePath } from '@/utils/images.utils';
-import { label } from '@/labels/labels';
 
 const Noticias: React.FC = () => {
     const [selected, setSelected] = useState<News | null>(null);
@@ -32,30 +30,18 @@ const Noticias: React.FC = () => {
                 const q = query(
                     collection(db, 'news'),
                     where('isactive', '==', true),
-                    limit(3)
-                    // orderBy('date', 'desc') // si tenés un índice creado, podés usarlo
+                    limit(3),
+                    orderBy('date', 'desc')
                 );
 
                 const snapshot = await getDocs(q);
 
                 const data = await Promise.all(
                     snapshot.docs.map(async (docSnap) => {
-                        const newsData = docSnap.data();
-
-                        let authorData = null;
-                        if (newsData.author) {
-                            const authorRef =
-                                newsData.author as DocumentReference;
-                            const authorSnap = await getDoc(authorRef);
-                            authorData = authorSnap.exists()
-                                ? authorSnap.data()
-                                : null;
-                        }
-
+                        let newsData = docSnap.data();
                         return {
                             ...newsData,
-                            index: newsData.index ?? 0,
-                            author: authorData,
+                            id: docSnap.id,
                         };
                     })
                 );
@@ -102,9 +88,9 @@ const Noticias: React.FC = () => {
 
                     {!isLoading && data ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {data.map((noticia, index) => (
+                            {data.map((noticia) => (
                                 <div
-                                    key={index}
+                                    key={noticia.id}
                                     onClick={() => setSelected(noticia)}
                                     className="cursor-pointer"
                                 >
@@ -175,7 +161,7 @@ const Noticias: React.FC = () => {
                                         className="text-gray-600 leading-relaxed whitespace-pre-line"
                                     ></div>
                                     <p className="text-gray-500 mt-4 text-sm italic text-right">
-                                        {selected.author.nickname}
+                                        {selected.author}
                                     </p>
                                 </motion.div>
                             </motion.div>

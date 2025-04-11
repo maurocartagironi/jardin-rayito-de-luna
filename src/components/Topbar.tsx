@@ -1,8 +1,8 @@
-import { useContent } from '@/context/ContentContext';
-import { useRouter } from '@/context/RouterContext';
-import { getImagePath } from '@/utils/images.utils';
 import { FC } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useContent } from '@/context/ContentContext';
+import { getImagePath } from '@/utils/images.utils';
+import { useRouter } from '@/context/RouterContext';
 
 const Topbar: FC = () => {
     const { content } = useContent();
@@ -19,7 +19,7 @@ const Topbar: FC = () => {
                 <div className="flex gap-3 items-center">
                     {socialmedias.map((item) => (
                         <a
-                            key={item.title}
+                            key={item.id}
                             href={item.button?.link}
                             target="_blank"
                             rel="noreferrer"
@@ -42,7 +42,7 @@ const Topbar: FC = () => {
 
                         return (
                             <Link
-                                key={menu.index}
+                                key={menu.id}
                                 to={menu.url}
                                 className={`text-sm ${
                                     isActive

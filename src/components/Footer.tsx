@@ -31,8 +31,8 @@ const Footer: FC = () => {
                     </h3>
                     {data && data.length > 0 ? (
                         <ul className="space-y-2 text-sm">
-                            {data.map((route: Router, index: number) => (
-                                <li key={index}>
+                            {data.map((route: Router) => (
+                                <li key={route.id}>
                                     <a
                                         href={route.url}
                                         className="hover:text-red-400"
@@ -85,6 +85,7 @@ const Footer: FC = () => {
                         <div className="flex gap-4">
                             {socialmedias.map((item) => (
                                 <a
+                                    key={item.id}
                                     href={item.button?.link}
                                     target="_blank"
                                     rel="noopener noreferrer"

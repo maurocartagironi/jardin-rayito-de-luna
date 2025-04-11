@@ -8,6 +8,7 @@ export interface News {
     imagetext: string;
     index: number;
     date: Timestamp;
-    author: UserData;
+    author: string;
     isactive: boolean;
+    id: string;
 }

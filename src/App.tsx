@@ -7,7 +7,6 @@ import { RouterProvider } from '@/context/RouterContext';
 
 import Layout from '@/layout/Layout';
 import Homepage from '@/pages/Homepage';
-import Actividades from '@/pages/Actividades';
 import Instalaciones from '@/pages/Instalaciones';
 import Galeria from '@/pages/Galeria';
 import SobreNosotros from '@/pages/SobreNosotros';
@@ -24,10 +23,6 @@ const App: React.FC = () => {
                         <Routes>
                             <Route element={<Layout />}>
                                 <Route path="/" element={<Homepage />} />
-                                <Route
-                                    path="/actividades"
-                                    element={<Actividades />}
-                                />
                                 <Route
                                     path="/instalaciones"
                                     element={<Instalaciones />}

@@ -6,6 +6,7 @@ interface Content {
     emoji: string;
     icon: string;
     type: string;
+    id: string;
     button?: {
         label: string;
         position?: 'bottom' | 'center';

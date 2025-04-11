@@ -6,12 +6,8 @@ import Loading from '../Loading';
 import { label } from '@/labels/labels';
 
 export const Galeria: React.FC = () => {
-    const IMAGE_LIMIT = 4;
-
     const { gallery, isLoading, hasError } = useGallery();
-    const info: Gallery[] = gallery
-        .filter((item) => item.section === 'home')
-        .slice(0, IMAGE_LIMIT);
+    const info: Gallery[] = gallery.filter((item) => item.section === 'home');
     const [selected, setSelected] = useState<Gallery | null>(null);
     const modalRef = useRef<HTMLDivElement>(null);
 
@@ -46,9 +42,9 @@ export const Galeria: React.FC = () => {
                         </h2>
                         {!isLoading && info ? (
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {info.map((item, index) => (
+                                {info.map((item) => (
                                     <div
-                                        key={index}
+                                        key={item.id}
                                         className="bg-muted h-32 rounded-xl shadow-md flex items-center justify-center text-muted-foreground overflow-hidden"
                                     >
                                         <img
@@ -57,7 +53,7 @@ export const Galeria: React.FC = () => {
                                                 item.image,
                                                 'gallery'
                                             )}
-                                            alt={`Imagen ${index + 1}`}
+                                            alt={`Imagen ${item.image + 1}`}
                                             className="h-full w-full object-cover cursor-pointer"
                                         />
                                     </div>
@@ -96,7 +92,10 @@ export const Galeria: React.FC = () => {
                                     </div>
 
                                     <img
-                                        src={selected.image}
+                                        src={getImagePath(
+                                            selected.image,
+                                            'gallery'
+                                        )}
                                         alt=""
                                         className="max-h-[75vh]"
                                     />

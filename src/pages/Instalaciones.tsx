@@ -21,7 +21,8 @@ const Instalaciones: FC = () => {
                         key={index}
                         title={item.title}
                         description={item.description}
-                        image={getImagePath(item.image, 'gallery')}
+                        image={getImagePath(item.image)}
+                        type="gallery"
                     />
                 ))}
             </div>

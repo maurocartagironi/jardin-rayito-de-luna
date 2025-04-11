@@ -44,7 +44,7 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                     <div className="flex items-center space-x-8">
                         {menues.map((menu: Router) => (
                             <Link
-                                key={menu.index}
+                                key={menu.id}
                                 to={menu.url}
                                 className={`nav-link text-sm ${
                                     isActive(menu.url)
@@ -103,7 +103,7 @@ const Header: FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                         <div className="px-2">
                             {menues.map((menu: Router) => (
                                 <Link
-                                    key={menu.index}
+                                    key={menu.id}
                                     to={menu.url}
                                     onClick={() => setIsMenuOpen(false)}
                                     className={`block px-3 py-2 rounded-md text-base font-medium ${

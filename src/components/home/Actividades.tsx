@@ -18,9 +18,9 @@ export const Actividades: React.FC = () => {
                     </h2>
                     {info && !isLoading ? (
                         <div className="grid md:grid-cols-4 gap-4">
-                            {info.map((actividad, i) => (
+                            {info.map((actividad) => (
                                 <Card
-                                    key={i}
+                                    key={actividad.id}
                                     title={actividad.title}
                                     description={actividad.description}
                                     iconUrl={actividad.icon}
