@@ -1,5 +1,4 @@
 const GOOGLE_API_KEY = 'AIzaSyCYC_tBUDxy9GvzMBqRBVeAerX_wR6wkcs';
-const PLACE_ID = 'ChIJN1t_tDeuEmsRUsoyG83frY4';
 
 type Review = {
     author_name: string;

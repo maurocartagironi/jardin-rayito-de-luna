@@ -23,6 +23,7 @@ export const getContentData = async (type: string) => {
                     emoji: doc.data().emoji,
                     icon: doc.data().icon,
                     type: doc.data().type,
+                    id: doc.id,
                 })
             );
 
