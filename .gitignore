@@ -15,9 +15,11 @@ build/
 # Firebase emulators
 firebase-debug.log
 .firebaserc
+.firebase
 firebase-key.json
 
 # Editor configs
 .vscode/
 .idea/
 .DS_Store
+.firebase/hosting.ZGlzdA.cache

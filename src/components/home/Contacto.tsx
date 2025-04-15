@@ -1,9 +1,19 @@
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { label } from '@/labels/labels';
 import { getImagePath } from '@/utils/images.utils';
 
 export const Contacto = () => {
+    const { sendEvent } = useAnalytics();
+
     const encodedMessage = encodeURIComponent(label.whatsAppMessage);
-    const whatsappLink = `https://wa.me/${label.phoneNumber}?text=${encodedMessage}`;
+    const whatsappLink = `https://wa.me/${label.company.phoneNumber}?text=${encodedMessage}`;
+
+    const handleClick = () => {
+        sendEvent('click_whatsapp', {
+            from_section: 'Contacto',
+            phone: label.company.phoneNumber,
+        });
+    };
 
     return (
         <section className="bg-primary text-primary-foreground py-16 px-4 text-center">
@@ -15,6 +25,7 @@ export const Contacto = () => {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={handleClick}
                 className="inline-flex items-center gap-3 border-2 text-white font-medium text-lg px-4 py-2 rounded-xl transition border-white md:border-primary hover:border-white"
             >
                 <img
@@ -27,5 +38,3 @@ export const Contacto = () => {
         </section>
     );
 };
-
-export default Contacto;

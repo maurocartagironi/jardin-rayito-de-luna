@@ -1,26 +1,37 @@
-// Import the functions you need from the SDKs you need
+// firebase.ts
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
+import { getAnalytics, logEvent as firebaseLogEvent } from 'firebase/analytics';
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: 'AIzaSyCQvFBY7RsiAgiUUZftwSKIgSDr3VrfNAM',
     authDomain: 'mi-rayito-de-luna.firebaseapp.com',
     projectId: 'mi-rayito-de-luna',
-    storageBucket: 'mi-rayito-de-luna.firebasestorage.app',
+    storageBucket: 'mi-rayito-de-luna.appspot.com',
     messagingSenderId: '48857501414',
     appId: '1:48857501414:web:47b540e870257fe861b527',
     measurementId: 'G-PTXCKSFH1X',
 };
 
-// Initialize Firebase
+// Inicializa Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-export { analytics, db };
+// Solo obtené analytics si está en navegador
+let analytics: ReturnType<typeof getAnalytics> | null = null;
+if (typeof window !== 'undefined') {
+    analytics = getAnalytics(app);
+}
+
+// Envoltorio seguro para logEvent
+const logEvent = (
+    analyticsInstance: typeof analytics,
+    eventName: string,
+    params?: any
+) => {
+    if (analyticsInstance) {
+        firebaseLogEvent(analyticsInstance, eventName, params);
+    }
+};
+
+export { app, db, analytics, logEvent };
