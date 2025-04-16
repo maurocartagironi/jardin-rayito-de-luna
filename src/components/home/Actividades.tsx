@@ -6,7 +6,7 @@ import Loading from '@components/Loading';
 export const Actividades: React.FC = () => {
     const { content, isLoading, hasError } = useContent();
     const info: Content[] = content.filter(
-        (item) => item.type === 'activities'
+        (item) => item.type === 'activities' && item.isactive
     );
 
     return (
@@ -17,7 +17,7 @@ export const Actividades: React.FC = () => {
                         {label.activities.title}
                     </h2>
                     {info && !isLoading ? (
-                        <div className="grid md:grid-cols-4 gap-4">
+                        <div className="grid gap-6 auto-grid">
                             {info.map((actividad) => (
                                 <Card
                                     key={actividad.id}

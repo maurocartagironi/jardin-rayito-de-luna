@@ -7,6 +7,7 @@ interface Content {
     icon: string;
     type: string;
     id: string;
+    isactive: boolean;
     button?: {
         label: string;
         position?: 'bottom' | 'center';

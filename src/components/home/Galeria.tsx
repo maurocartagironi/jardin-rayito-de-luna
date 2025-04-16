@@ -32,6 +32,11 @@ export const Galeria: React.FC = () => {
         };
     }, [selected]);
 
+    const openImage = (item: Gallery) => {
+        const imageUrl = getImagePath(item.image, 'gallery');
+        window.open(imageUrl, '_blank');
+    };
+
     return (
         <>
             {!hasError && info && (
@@ -54,7 +59,16 @@ export const Galeria: React.FC = () => {
                                                 'gallery'
                                             )}
                                             alt={`Imagen ${item.image + 1}`}
-                                            className="h-full w-full object-cover cursor-pointer"
+                                            className="md:flex h-full w-full object-cover cursor-pointer"
+                                        />
+                                        <img
+                                            onClick={() => openImage(item)}
+                                            src={getImagePath(
+                                                item.image,
+                                                'gallery'
+                                            )}
+                                            alt={`Imagen ${item.image + 1}`}
+                                            className="md:hidden h-full w-full object-cover cursor-pointer"
                                         />
                                     </div>
                                 ))}
